@@ -1,0 +1,29 @@
+name,level,path,min_grade,description
+Bachelor of Medicine and Surgery (MBChB),bachelors,medicine,A-,"A rigorous 6-year medical program focused on human health, patient care, diagnostics, and surgery."
+Bachelor of Nursing,bachelors,medicine,B,"Prepares students for clinical nursing, patient care, and hospital-based practice."
+Bachelor of Pharmacy,bachelors,medicine,B+,"Training in drug formulation, pharmacology, and pharmaceutical practice."
+Diploma in Clinical Medicine,diploma,medicine,C+,"Trains clinical officers in primary healthcare, diagnosis, and treatment."
+Certificate in Community Health,certificate,medicine,C-,"Introduces students to community health promotion, disease prevention, and basic care."
+Bachelor of Civil Engineering,bachelors,engineering,B+,"Covers structural design, construction, transportation, and water engineering."
+Bachelor of Electrical Engineering,bachelors,engineering,B+,"Focuses on power systems, electronics, and electrical design."
+Diploma in Mechanical Engineering,diploma,engineering,C,"Prepares students for machine operations, automotive engineering, and manufacturing."
+Certificate in Electrical Installation,certificate,engineering,D+,"Basic training in wiring, electrical safety, and home electrical systems."
+Artisan in Welding & Fabrication,artisan,engineering,D,"Hands-on metalwork training including cutting, joining, and construction."
+Bachelor of Computer Science,bachelors,ict,B,"Covers programming, algorithms, AI, and software engineering."
+Bachelor of Information Technology,bachelors,ict,C+,"Focuses on IT infrastructure, networks, cybersecurity, and databases."
+Diploma in ICT,diploma,ict,C,"Introduces networking, computer systems, and basic software development."
+Certificate in ICT,certificate,ict,D+,"Basic computer literacy, office applications, and ICT tools training."
+Artisan in Computer Repair,artisan,ict,D,Hands-on course on computer hardware repair and maintenance.
+Bachelor of Commerce (BCom),bachelors,business,C+,"A broad business program covering finance, accounting, HR, and marketing."
+Bachelor of Economics,bachelors,business,B-,"Focuses on economic theory, statistics, and financial modeling."
+Diploma in Business Management,diploma,business,C-,"Equips students with skills in management, entrepreneurship, and operations."
+Certificate in Sales & Marketing,certificate,business,D+,"Covers marketing strategies, sales techniques, and customer service."
+Artisan in Storekeeping,artisan,business,D,Basic training in inventory handling and warehouse management.
+Bachelor of Education (Science),bachelors,education,C+,"Prepares teachers for secondary school sciences such as math, physics, chemistry, and biology."
+Bachelor of Education (Arts),bachelors,education,C+,"Trains teachers in languages, humanities, and social sciences."
+Diploma in Early Childhood Education,diploma,education,C,Trains preschool teachers for early learning and child development.
+Certificate in ECDE,certificate,education,D+,Basic training for early childhood caregivers and assistants.
+Bachelor of Agriculture,bachelors,agriculture,C+,"Covers crop science, animal production, agronomy, and agricultural economics."
+Diploma in Agriculture,diploma,agriculture,C-,"Practical farming methods, irrigation, livestock care, and agribusiness."
+Certificate in Horticulture,certificate,agriculture,D+,"Training in gardening, greenhouse management, and flower/vegetable farming."
+Artisan in Agriculture,artisan,agriculture,D,Basic hands-on farming training for small-scale production.

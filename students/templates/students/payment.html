@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Premium Upgrade{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <i class="bi bi-shield-lock-fill display-3 mb-2"></i>
+                    <h3 class="fw-bold m-0">Unlock Premium</h3>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <h5 class="text-muted mb-3">Lifetime Access</h5>
+                        <h1 class="display-4 fw-bold text-dark">Ksh 100</h1>
+                        <span class="badge bg-warning text-dark mt-2">One-time payment</span>
+                    </div>
+
+                    <ul class="list-unstyled mb-4 small text-secondary">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> View <strong>20,000+ Courses</strong></li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Calculate <strong>Cluster Points</strong></li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Access <strong>Premium Blog</strong></li>
+                    </ul>
+
+                    <hr class="my-4">
+
+                    <form method="POST" id="paymentForm">
+                        {% csrf_token %}
+                        
+                        <label class="form-label fw-bold small text-muted">M-PESA PHONE NUMBER</label>
+                        <div class="input-group input-group-lg mb-3">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-phone"></i></span>
+                            <input type="text" name="phone_number" class="form-control border-start-0 ps-0" 
+                                   placeholder="0712 345 678" required>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm" id="payButton">
+                                Pay Now (STK Push)
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <p class="text-center small text-muted mt-3 mb-0">
+                        Check your phone for the PIN prompt after clicking.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-4 text-muted small">
+                <i class="bi bi-lock-fill"></i> Secure Payment via Safaricom Daraja API
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to show loading state -->
+<script>
+    document.getElementById('paymentForm').addEventListener('submit', function() {
+        var btn = document.getElementById('payButton');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+    });
+</script>
+{% endblock %}

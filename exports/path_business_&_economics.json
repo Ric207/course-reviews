@@ -1,0 +1,44 @@
+[
+  {
+    "program_name": "Bachelor of Commerce (Accounting)",
+    "level": "Degree",
+    "path": "Business & Economics > Accounting",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics or Business Studies (Minimum C plain / 6 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any two Group 2, 3, or 4 subjects"
+    ],
+    "description": "A comprehensive business degree specializing in accounting theory and practice, financial accounting, management accounting, cost accounting, auditing and assurance, taxation (KRA tax system), accounting information systems, financial management, corporate governance, business law, accounting standards (IFRS, IAS), and forensic accounting.",
+    "career_path": "Graduates pursue careers as accountants, auditors, tax consultants, financial analysts, management accountants, budget analysts, financial controllers, or accounting information systems specialists. Starting salaries: KSh 45,000-100,000 monthly. Most pursue CPA (K) certification for enhanced career prospects.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE / ICPAK exemptions",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029875Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Commerce (Finance)",
+    "level": "Degree",
+    "path": "Business & Economics > Finance",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics or Business Studies (Minimum C plain / 6 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any two Group 2, 3, or 4 subjects"
+    ],
+    "description": "A specialized business degree focusing on corporate finance, investment analysis and portfolio management, financial markets and institutions, capital markets operations, banking operations, financial modeling, risk management, derivatives and financial engineering, international finance, and treasury management.",
+    "career_path": "Graduates pursue careers as financial analysts, investment analysts, equity research analysts, portfolio managers, credit analysts, relationship managers, treasury officers, financial planners, risk managers, stockbrokers, or fintech specialists. Starting salaries: KSh 50,000-120,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029895Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

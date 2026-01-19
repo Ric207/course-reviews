@@ -1,0 +1,44 @@
+[
+  {
+    "program_name": "Diploma in Information Technology",
+    "level": "Diploma",
+    "path": "ICT > Information Technology",
+    "min_mean_grade": "C-",
+    "min_cluster_points": 22,
+    "subject_requirements": [
+      "Mathematics (Minimum D+ / 4 points)",
+      "English or Kiswahili (Minimum D+ / 4 points)",
+      "Any other two subjects"
+    ],
+    "description": "A comprehensive practical IT diploma providing hands-on training in computer applications, programming basics (Python, Java), web development (HTML, CSS, JavaScript, PHP), database management (MySQL), computer networking fundamentals, operating systems (Windows, Linux), IT support and troubleshooting, and cybersecurity basics.",
+    "career_path": "Graduates work as IT support technicians, computer lab technicians, network administrators, web developers, database assistants, system administrators, help desk officers, or ICT teachers in colleges. Starting salaries: KSh 25,000-50,000 monthly.",
+    "duration": "2-3 years (4-6 semesters)",
+    "exam_body": "KNEC / TVETA",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.030318Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Diploma in Business Management",
+    "level": "Diploma",
+    "path": "Business > Management",
+    "min_mean_grade": "C-",
+    "min_cluster_points": 20,
+    "subject_requirements": [
+      "English or Kiswahili (Minimum D+ / 4 points)",
+      "Mathematics or Business Studies (Minimum D+ / 4 points)",
+      "Any other two subjects"
+    ],
+    "description": "A comprehensive business diploma covering principles of management, business communication, organizational behavior, accounting basics, marketing principles, human resource management, entrepreneurship, business law, office management, customer service, sales management, and business planning.",
+    "career_path": "Graduates work as administrative assistants, office administrators, supervisors, junior managers, sales representatives, customer service officers, operations assistants, or start their own small businesses. Starting salaries: KSh 20,000-45,000 monthly.",
+    "duration": "2-3 years (4-6 semesters)",
+    "exam_body": "KNEC / TVETA",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.030353Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

@@ -1,0 +1,473 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Minimal, Professional Styles - Mobile First */
+    
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem 0;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+        line-height: 1.3;
+    }
+
+    .search-input {
+        border-radius: 50px;
+        padding: 0.75rem 1.25rem;
+        border: none;
+    }
+
+    .search-btn {
+        border-radius: 50px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .stat-card {
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s ease;
+    }
+
+    .stat-card:active {
+        transform: scale(0.98);
+    }
+
+    .course-card {
+        border-radius: 12px;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .course-card:active {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .action-card {
+        border-radius: 12px;
+        min-height: 280px;
+    }
+
+    .news-card {
+        border-radius: 12px;
+    }
+
+    .news-img-wrapper {
+        height: 180px;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .btn-primary-custom {
+        background: #667eea;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+    }
+
+    .btn-primary-custom:hover {
+        background: #5568d3;
+    }
+
+    .section-divider {
+        border-top: 2px solid #e9ecef;
+        margin: 3rem 0;
+    }
+
+    /* Desktop Enhancements */
+    @media (min-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .course-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .search-input {
+            padding: 1rem 1.5rem;
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+        }
+    }
+
+    /* Prevent layout shifts */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .card-body {
+        word-wrap: break-word;
+    }
+</style>
+
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-4">
+
+            <!-- Left Content -->
+            <div class="col-lg-6">
+                <div class="badge bg-white text-primary px-3 py-2 mb-3 fw-semibold">
+                    🎓 Trusted by 10,000+ Students
+                </div>
+                
+                <h1 class="hero-title fw-bold text-white mb-3">
+                    Unlock Your Future With Smart Career Choices
+                </h1>
+                
+                <p class="text-white mb-4" style="opacity: 0.95; font-size: 1.1rem;">
+                    Get accurate career and course recommendations based on your KCSE grades — 
+                    trusted by students across Kenya.
+                </p>
+
+                <!-- Search Bar -->
+                <form action="{% url 'students:results' %}" method="get" class="mb-4">
+                    <div class="input-group shadow-sm">
+                        <input type="text" 
+                               name="search" 
+                               class="form-control search-input" 
+                               placeholder="Search courses (e.g. Nursing, IT)...">
+                        <button class="btn btn-warning search-btn fw-semibold" type="submit">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+
+                <!-- CTA Buttons -->
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <a href="{% url 'students:enter_grades' %}" class="btn btn-light btn-lg fw-semibold">
+                        <i class="bi bi-calculator"></i> Calculate Points
+                    </a>
+                    <a href="{% url 'blog_list' %}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-book"></i> Career Tips
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Image -->
+            <div class="col-lg-6 text-center">
+                <img src="{% static 'courses/hero.jpg' %}" 
+                     class="img-fluid rounded-4 shadow-lg"
+                     alt="Career Guidance"
+                     loading="lazy">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- STATS SECTION -->
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2">Why Students Trust Us</h2>
+        <p class="text-muted">Join thousands making informed career decisions</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-card card border-0 shadow-sm p-4 h-100">
+                <div class="text-center">
+                    <div class="text-primary mb-3">
+                        <i class="bi bi-database-check" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary">{{ total_courses }}+</h3>
+                    <h5 class="fw-semibold mb-3">Accredited Courses</h5>
+                    <p class="text-muted mb-0">
+                        From Degrees to Artisan levels, covering every program in Kenya.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card card border-0 shadow-sm p-4 h-100">
+                <div class="text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-graph-up-arrow" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="fw-bold text-success">100%</h3>
+                    <h5 class="fw-semibold mb-3">Career Roadmaps</h5>
+                    <p class="text-muted mb-0">
+                        Skills needed, job opportunities, and market trends for 2025.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card card border-0 shadow-sm p-4 h-100">
+                <div class="text-center">
+                    <div class="text-warning mb-3">
+                        <i class="bi bi-star-fill" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="fw-bold text-warning">5,000+</h3>
+                    <h5 class="fw-semibold mb-3">Student Reviews</h5>
+                    <p class="text-muted mb-0">
+                        Real feedback from university students nationwide.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- TOP RATED COURSES -->
+{% if top_courses %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2">⭐ Top Rated Courses</h2>
+        <p class="text-muted">Most popular and highly-rated programs</p>
+    </div>
+    
+    <div class="row g-4">
+        {% for course in top_courses %}
+        <div class="col-lg-4 col-md-6">
+            <div class="course-card card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-primary px-3 py-2">{{ course.level }}</span>
+                        <span class="text-warning fw-semibold">
+                            <i class="bi bi-star-fill"></i> {{ course.avg_rating|floatformat:1 }}
+                        </span>
+                    </div>
+                    <h5 class="fw-bold mb-3">{{ course.name }}</h5>
+                    <p class="text-muted mb-4">{{ course.description|truncatewords:15 }}</p>
+                    <a href="{% url 'students:course_reviews' course.id %}" 
+                       class="btn btn-primary-custom text-white w-100">
+                        <i class="bi bi-eye"></i> See Reviews
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="section-divider"></div>
+{% endif %}
+
+<!-- WHAT WOULD YOU LIKE TO DO -->
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2">What Would You Like To Do?</h2>
+        <p class="text-muted">Choose your path to success</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="action-card card border-0 shadow-sm p-4 h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="text-white">
+                    <div class="mb-3">
+                        <i class="bi bi-check-circle" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Check Eligibility</h4>
+                    <p class="mb-4">Enter your KCSE grades to see which courses you qualify for instantly.</p>
+                    <a href="{% url 'students:enter_grades' %}" class="btn btn-light btn-lg w-100 fw-semibold">
+                        Enter Grades <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="action-card card border-0 shadow-sm p-4 h-100 bg-dark text-white">
+                <div class="mb-3">
+                    <i class="bi bi-book" style="font-size: 3rem; color: #ffc107;"></i>
+                </div>
+                <h4 class="fw-bold mb-3">Career Blog</h4>
+                <p class="mb-4">Read premium guides on KUCCPS and salary insights.</p>
+                <a href="{% url 'blog_list' %}" class="btn btn-warning btn-lg w-100 fw-semibold">
+                    Read Articles <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="action-card card border-0 shadow-sm p-4 h-100" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                <div class="text-white">
+                    <div class="mb-3">
+                        <i class="bi bi-headset" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Get Support</h4>
+                    <p class="mb-4">Talk to our guidance team for personalized advice.</p>
+                    <a href="{% url 'contact_us' %}" class="btn btn-light btn-lg w-100 fw-semibold">
+                        Contact Us <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- LATEST NEWS -->
+{% if latest_posts %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2">📰 Latest Insights</h2>
+        <p class="text-muted">Stay updated with career trends</p>
+    </div>
+    
+    <div class="row g-4">
+        {% for post in latest_posts %}
+        <div class="col-lg-4 col-md-6">
+            <div class="news-card card border-0 shadow-sm h-100">
+                <div class="news-img-wrapper">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" 
+                             class="w-100 h-100" 
+                             style="object-fit: cover;" 
+                             alt="{{ post.title }}"
+                             loading="lazy">
+                    {% else %}
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center" 
+                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="bi bi-newspaper text-white" style="font-size: 3rem;"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-body p-4">
+                    <span class="badge bg-primary px-3 py-2 mb-3">{{ post.category }}</span>
+                    <h5 class="fw-bold mb-3">
+                        <a href="{% url 'blog_detail' post.id %}" class="text-dark text-decoration-none">
+                            {{ post.title }}
+                        </a>
+                    </h5>
+                    <p class="text-muted mb-3">{{ post.content|striptags|truncatewords:12 }}</p>
+                    <a href="{% url 'blog_detail' post.id %}" class="btn btn-outline-primary">
+                        Read More <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="section-divider"></div>
+{% endif %}
+
+<!-- CALL TO ACTION -->
+<div class="my-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 4rem 0;">
+    <div class="container text-center text-white">
+        <h2 class="fw-bold mb-3">Ready to Start Your Journey?</h2>
+        <p class="mb-4" style="font-size: 1.1rem; opacity: 0.95;">
+            Calculate your cluster points and discover your perfect course
+        </p>
+        <a href="{% url 'students:enter_grades' %}" class="btn btn-warning btn-lg fw-semibold px-5">
+            <i class="bi bi-calculator"></i> Get Started Now
+        </a>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Brand -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="fw-bold mb-3 text-warning">Course Reviews KE</h5>
+                <p class="text-white-50 mb-4">
+                    Your #1 partner in career guidance and university placement in Kenya.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-white-50 text-decoration-none">
+                        <i class="bi bi-facebook fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white-50 text-decoration-none">
+                        <i class="bi bi-twitter fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white-50 text-decoration-none">
+                        <i class="bi bi-instagram fs-5"></i>
+                    </a>
+                    <a href="#" class="text-white-50 text-decoration-none">
+                        <i class="bi bi-linkedin fs-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h6 class="fw-bold mb-3">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{% url 'home' %}" class="text-white-50 text-decoration-none">Home</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'students:enter_grades' %}" class="text-white-50 text-decoration-none">Calculate Points</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'students:results' %}" class="text-white-50 text-decoration-none">Browse Courses</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'blog_list' %}" class="text-white-50 text-decoration-none">Blog</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Resources -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="fw-bold mb-3">Resources</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">KUCCPS Guide</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">Career Paths</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white-50 text-decoration-none">University Reviews</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'contact_us' %}" class="text-white-50 text-decoration-none">Support</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="fw-bold mb-3">Contact Us</h6>
+                <p class="text-white-50 mb-2">
+                    <i class="bi bi-telephone-fill me-2"></i>+254 743439586
+                </p>
+                <p class="text-white-50 mb-2">
+                    <i class="bi bi-envelope-fill me-2"></i>support@coursereviews.co.ke
+                </p>
+                <p class="text-white-50 mb-0">
+                    <i class="bi bi-geo-alt-fill me-2"></i>Nairobi, Kenya
+                </p>
+            </div>
+        </div>
+        
+        <hr class="border-secondary my-4">
+        
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="small mb-0 text-white-50">
+                    &copy; 2025 Course Reviews KE. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white-50 text-decoration-none small me-3">Privacy</a>
+                <a href="#" class="text-white-50 text-decoration-none small me-3">Terms</a>
+                <a href="#" class="text-white-50 text-decoration-none small">Cookies</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

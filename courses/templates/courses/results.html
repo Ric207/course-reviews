@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h2 class="mb-4 text-center">All Students Results</h2>
+
+    {% if results %}
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Mean Grade</th>
+                    <th>Subjects & Grades</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in results %}
+                <tr>
+                    <td>{{ student.student_name }}</td>
+                    <td>{{ student.kcse_mean_grade }}</td>
+                    <td>
+                        <ul class="mb-0">
+                        {% for item in student.subjects %}
+                            <li>{{ item.subject }} : <strong>{{ item.grade }}</strong></li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No results added yet.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+

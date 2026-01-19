@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Course Reviews KE{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    
+    <!-- Success Alert -->
+    {% if success %}
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <strong><i class="bi bi-check-circle-fill"></i> Message Sent!</strong> 
+        Thank you{% if user_name %}, {{ user_name }}{% endif %}! We have received your message and will get back to you shortly.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <!-- Career Coach Banner (NEW) -->
+    <div class="alert alert-info alert-dismissible fade show shadow-sm border-0 mb-4" role="alert" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="d-flex align-items-center">
+            <div class="bg-white rounded-circle p-3 me-3" style="width: 60px; height: 60px;">
+                <i class="bi bi-person-video3 text-primary fs-3"></i>
+            </div>
+            <div class="flex-grow-1 text-white">
+                <h5 class="mb-1 fw-bold"><i class="bi bi-star-fill text-warning"></i> Need a Personal Career Coach?</h5>
+                <p class="mb-0 small">Get 1-on-1 guidance on course selection, career paths, and cluster points. Book your session now!</p>
+            </div>
+            <a href="https://wa.me/254743439586?text=Hi,%20I%20need%20career%20coaching%20assistance" 
+               target="_blank" 
+               class="btn btn-light btn-sm fw-bold text-primary ms-3">
+                <i class="bi bi-whatsapp text-success"></i> Chat Now
+            </a>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row shadow-lg rounded overflow-hidden">
+        
+        <!-- Left Side: Contact Info & Community (Dark Blue) -->
+        <div class="col-md-5 bg-dark text-white p-5 d-flex flex-column justify-content-start">
+            <h2 class="fw-bold mb-2">Get in Touch</h2>
+            <p class="lead mb-4 text-white-50">Have questions about your cluster points, course selection, or career path? We're here to guide you every step of the way.</p>
+            
+            <!-- Contact Details -->
+            <div class="mb-4">
+                <!-- Location -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-geo-alt-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-uppercase fw-bold text-primary small">Location</h6>
+                        <span class="small">Nairobi, Kenya (Westlands)</span>
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-envelope-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-uppercase fw-bold text-primary small">Email</h6>
+                        <a href="mailto:support@coursereviews.co.ke" class="text-white text-decoration-none hover-primary small">
+                            support@coursereviews.co.ke
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Call / WhatsApp -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-whatsapp fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-uppercase fw-bold text-success small">Call / WhatsApp</h6>
+                        <a href="https://wa.me/254743439586" target="_blank" class="text-white text-decoration-none hover-success small d-block">
+                            <strong>0743 439 586</strong>
+                        </a>
+                        <span class="text-white-50" style="font-size: 0.75rem;">Available Mon-Sat, 8AM-8PM EAT</span>
+                    </div>
+                </div>
+
+                <!-- Phone Call -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-info rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-telephone-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-uppercase fw-bold text-info small">Direct Call</h6>
+                        <a href="tel:+254743439586" class="text-white text-decoration-none hover-info small">
+                            +254 743 439 586
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAREER COACHING CARD (NEW) -->
+            <div class="p-4 rounded border-0 mb-4 shadow-sm" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h6 class="fw-bold text-white mb-2">
+                    <i class="bi bi-mortarboard-fill"></i> Personalized Career Coaching
+                </h6>
+                <p class="small text-white mb-3 lh-sm">
+                    Confused about which course to choose? Worried about your cluster points? Get expert 1-on-1 guidance from our certified career coach.
+                </p>
+                <ul class="small text-white mb-3 ps-3">
+                    <li>Course & University Selection Strategy</li>
+                    <li>Cluster Points Analysis & Improvement Tips</li>
+                    <li>Career Path Planning (5-10 Year Roadmap)</li>
+                    <li>KUCCPS Application Assistance</li>
+                    <li>Scholarship & Funding Guidance</li>
+                </ul>
+                <div class="d-grid gap-2">
+                    <a href="https://wa.me/254743439586?text=Hi,%20I%20need%20career%20coaching%20assistance.%20Please%20share%20more%20details." 
+                       target="_blank" 
+                       class="btn btn-light btn-sm fw-bold">
+                        <i class="bi bi-whatsapp text-success"></i> Book Coaching Session
+                    </a>
+                    <a href="tel:+254743439586" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-telephone-fill"></i> Call for Consultation
+                    </a>
+                </div>
+                <p class="text-white text-center mt-2 mb-0" style="font-size: 0.7rem;">
+                    <i class="bi bi-clock-fill"></i> Response within 2 hours
+                </p>
+            </div>
+
+            <!-- WHATSAPP COMMUNITY & QR CODE SECTION -->
+            <div class="p-3 rounded border border-secondary bg-secondary bg-opacity-10 mb-4">
+                <h6 class="fw-bold text-success mb-3">
+                    <i class="bi bi-people-fill"></i> Join Student Community (5,000+ Members)
+                </h6>
+                <div class="d-flex align-items-center">
+                    <!-- QR Code -->
+                    <div class="bg-white p-2 rounded me-3 shadow-sm">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://chat.whatsapp.com/KovQ6Wv6xA4FJcCkGkTt4d" 
+                             alt="Scan to Join WhatsApp Group" width="80" height="80">
+                    </div>
+                    <div>
+                        <p class="small text-white-50 mb-2 lh-sm">
+                            <i class="bi bi-check-circle-fill text-success"></i> Daily university updates<br>
+                            <i class="bi bi-check-circle-fill text-success"></i> Scholarship alerts<br>
+                            <i class="bi bi-check-circle-fill text-success"></i> Peer support & advice
+                        </p>
+                        <a href="https://chat.whatsapp.com/KovQ6Wv6xA4FJcCkGkTt4d" 
+                           target="_blank" 
+                           class="btn btn-sm btn-success fw-bold w-100 shadow-sm">
+                            Join Free Group <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WHY CONTACT US SECTION (NEW) -->
+            <div class="mb-4">
+                <h6 class="text-uppercase text-primary fw-bold mb-3 small">
+                    <i class="bi bi-question-circle-fill"></i> How We Help You
+                </h6>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="bg-secondary bg-opacity-25 p-2 rounded text-center">
+                            <i class="bi bi-calculator text-warning fs-4 d-block mb-1"></i>
+                            <span class="small fw-bold">Cluster Points Calculator</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-secondary bg-opacity-25 p-2 rounded text-center">
+                            <i class="bi bi-book text-info fs-4 d-block mb-1"></i>
+                            <span class="small fw-bold">Course Reviews</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-secondary bg-opacity-25 p-2 rounded text-center">
+                            <i class="bi bi-building text-success fs-4 d-block mb-1"></i>
+                            <span class="small fw-bold">University Rankings</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="bg-secondary bg-opacity-25 p-2 rounded text-center">
+                            <i class="bi bi-cash-coin text-danger fs-4 d-block mb-1"></i>
+                            <span class="small fw-bold">Scholarship Alerts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="mt-auto pt-4 border-top border-secondary">
+                <p class="small text-white-50 mb-2">
+                    <i class="bi bi-share-fill"></i> Follow us for daily updates:
+                </p>
+                <div class="d-flex gap-3">
+                    <!-- WhatsApp Chat -->
+                    <a href="https://wa.me/254743439586" target="_blank" class="text-white hover-success" title="Chat on WhatsApp">
+                        <i class="bi bi-whatsapp fs-5"></i>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@coursereviewske" target="_blank" class="text-white hover-tiktok" title="Follow on TikTok">
+                        <i class="bi bi-tiktok fs-5"></i>
+                    </a>
+                    <!-- Facebook -->
+                    <a href="#" class="text-white hover-primary" title="Follow on Facebook">
+                        <i class="bi bi-facebook fs-5"></i>
+                    </a>
+                    <!-- Twitter/X -->
+                    <a href="#" class="text-white hover-primary" title="Follow on Twitter">
+                        <i class="bi bi-twitter-x fs-5"></i>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="#" class="text-white hover-primary" title="Follow on Instagram">
+                        <i class="bi bi-instagram fs-5"></i>
+                    </a>
+                    <!-- YouTube (NEW) -->
+                    <a href="#" class="text-white hover-danger" title="Subscribe on YouTube">
+                        <i class="bi bi-youtube fs-5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Trust Indicators (NEW) -->
+            <div class="mt-3 pt-3 border-top border-secondary">
+                <div class="d-flex justify-content-around text-center">
+                    <div>
+                        <h5 class="text-primary fw-bold mb-0">50K+</h5>
+                        <small class="text-white-50">Students Helped</small>
+                    </div>
+                    <div>
+                        <h5 class="text-success fw-bold mb-0">4.9/5</h5>
+                        <small class="text-white-50">Rating</small>
+                    </div>
+                    <div>
+                        <h5 class="text-warning fw-bold mb-0">24/7</h5>
+                        <small class="text-white-50">Support</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Contact Form -->
+        <div class="col-md-7 bg-white p-5">
+            <h3 class="text-dark fw-bold mb-2">Send Us a Message</h3>
+            <p class="text-muted mb-4">
+                <i class="bi bi-clock-fill text-primary"></i> We typically respond within 2-4 hours during business hours.
+            </p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label fw-bold small text-muted">
+                            <i class="bi bi-person-fill text-primary"></i> YOUR NAME *
+                        </label>
+                        <input type="text" 
+                               class="form-control bg-light border-0 py-2 shadow-sm" 
+                               id="name" 
+                               name="name" 
+                               placeholder="e.g., John Kamau" 
+                               required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label fw-bold small text-muted">
+                            <i class="bi bi-envelope-fill text-primary"></i> YOUR EMAIL *
+                        </label>
+                        <input type="email" 
+                               class="form-control bg-light border-0 py-2 shadow-sm" 
+                               id="email" 
+                               name="email" 
+                               placeholder="john@example.com" 
+                               required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label fw-bold small text-muted">
+                            <i class="bi bi-telephone-fill text-primary"></i> PHONE NUMBER (Optional)
+                        </label>
+                        <input type="tel" 
+                               class="form-control bg-light border-0 py-2 shadow-sm" 
+                               id="phone" 
+                               name="phone" 
+                               placeholder="0712 345 678"
+                               pattern="[0-9]{10}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="subject" class="form-label fw-bold small text-muted">
+                            <i class="bi bi-tag-fill text-primary"></i> SUBJECT *
+                        </label>
+                        <select class="form-select bg-light border-0 py-2 shadow-sm" id="subject" name="subject" required>
+                            <option value="" selected disabled>Choose a topic...</option>
+                            <option value="General Inquiry">General Inquiry</option>
+                            <option value="Cluster Points Help">Cluster Points Assistance</option>
+                            <option value="Course Selection">Course Selection Guidance</option>
+                            <option value="Career Coaching">Career Coaching Request</option>
+                            <option value="KUCCPS Application">KUCCPS Application Help</option>
+                            <option value="Payment Issue">Payment/Subscription Issue</option>
+                            <option value="Technical Support">Technical Support</option>
+                            <option value="Partnership">Partnership Opportunity</option>
+                            <option value="Scholarship Info">Scholarship Information</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="message" class="form-label fw-bold small text-muted">
+                            <i class="bi bi-chat-dots-fill text-primary"></i> YOUR MESSAGE *
+                        </label>
+                        <textarea class="form-control bg-light border-0 shadow-sm" 
+                                  id="message" 
+                                  name="message" 
+                                  rows="6" 
+                                  placeholder="Tell us how we can help you. Be as detailed as possible..." 
+                                  required></textarea>
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> For career coaching, please mention your current situation and goals.
+                        </small>
+                    </div>
+                    
+                    <!-- Quick Action Buttons (NEW) -->
+                    <div class="col-12">
+                        <div class="alert alert-light border shadow-sm p-3">
+                            <p class="small text-muted mb-2 fw-bold">
+                                <i class="bi bi-lightning-fill text-warning"></i> Need immediate help? Try these:
+                            </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="https://wa.me/254743439586?text=Hi,%20I%20need%20help%20with%20cluster%20points" 
+                                   target="_blank" 
+                                   class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp Chat
+                                </a>
+                                <a href="tel:+254743439586" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-telephone-fill"></i> Call Now
+                                </a>
+                                <a href="https://wa.me/254743439586?text=Hi,%20I%20need%20career%20coaching" 
+                                   target="_blank" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-mortarboard-fill"></i> Career Coach
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow">
+                            <i class="bi bi-send-fill me-2"></i> Send Message
+                        </button>
+                        <p class="text-center text-muted small mt-2 mb-0">
+                            <i class="bi bi-shield-check text-success"></i> Your information is safe with us
+                        </p>
+                    </div>
+                </div>
+            </form>
+
+            <!-- FAQ Quick Links (NEW) -->
+            <div class="mt-5 pt-4 border-top">
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-question-circle text-primary"></i> Quick Help Topics
+                </h5>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="p-3 bg-light rounded hover-shadow">
+                                <i class="bi bi-calculator text-primary"></i>
+                                <strong class="d-block small">How to Calculate Cluster Points</strong>
+                                <small class="text-muted">Step-by-step guide →</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="p-3 bg-light rounded hover-shadow">
+                                <i class="bi bi-cash-coin text-success"></i>
+                                <strong class="d-block small">Available Scholarships</strong>
+                                <small class="text-muted">Find funding options →</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="p-3 bg-light rounded hover-shadow">
+                                <i class="bi bi-file-text text-warning"></i>
+                                <strong class="d-block small">KUCCPS Application Tips</strong>
+                                <small class="text-muted">Avoid common mistakes →</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" class="text-decoration-none">
+                            <div class="p-3 bg-light rounded hover-shadow">
+                                <i class="bi bi-building text-info"></i>
+                                <strong class="d-block small">University Comparison Tool</strong>
+                                <small class="text-muted">Compare courses →</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom CTA Section (NEW) -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="p-4 rounded shadow-sm text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h4 class="text-white fw-bold mb-2">
+                    <i class="bi bi-star-fill text-warning"></i> Still Have Questions?
+                </h4>
+                <p class="text-white mb-3">
+                    Our career coach is available for personalized 1-on-1 consultations
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="https://wa.me/254743439586?text=Hi,%20I%20need%20career%20coaching%20assistance" 
+                       target="_blank" 
+                       class="btn btn-light btn-lg fw-bold">
+                        <i class="bi bi-whatsapp text-success"></i> Chat on WhatsApp
+                    </a>
+                    <a href="tel:+254743439586" class="btn btn-outline-light btn-lg fw-bold">
+                        <i class="bi bi-telephone-fill"></i> Call: 0743 439 586
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-primary:hover { color: #0d6efd !important; transition: color 0.3s; }
+    .hover-success:hover { color: #25d366 !important; transition: color 0.3s; }
+    .hover-tiktok:hover { color: #ff0050 !important; transition: color 0.3s; }
+    .hover-info:hover { color: #0dcaf0 !important; transition: color 0.3s; }
+    .hover-danger:hover { color: #dc3545 !important; transition: color 0.3s; }
+    .hover-shadow:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important; 
+        transition: all 0.3s; 
+    }
+    .form-control:focus, .form-select:focus { 
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important; 
+        border: 1px solid #0d6efd !important; 
+        background-color: #fff !important; 
+    }
+    .btn { transition: all 0.3s ease; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+</style>
+{% endblock %}

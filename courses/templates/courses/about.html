@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Course Reviews KE{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <!-- HERO SECTION -->
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-primary mb-3">Empowering Your Future</h1>
+            <p class="lead text-secondary">
+                We bridge the gap between your KCSE results and your dream career. 
+                Course Reviews KE is the ultimate guidance platform for Kenyan students, 
+                helping you navigate the complex world of university placement with confidence.
+            </p>
+            <a href="{% url 'students:enter_grades' %}" class="btn btn-warning btn-lg fw-bold mt-3">
+                Start Your Journey <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="col-lg-6 text-center">
+            <!-- Placeholder for an illustration icon -->
+            <i class="bi bi-mortarboard-fill text-light" style="font-size: 10rem; text-shadow: 2px 2px 4px #ccc;"></i>
+        </div>
+    </div>
+
+    <hr class="my-5">
+
+    <!-- MISSION SECTION -->
+    <div class="row text-center mb-5">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="fw-bold mb-3">Our Mission</h2>
+            <p class="fs-5 text-muted">
+                To provide every Kenyan student with accurate, data-driven, and accessible career guidance. 
+                We believe that with the right information, every student can find a course that fits their 
+                grades and passions.
+            </p>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS SECTION -->
+    <h2 class="text-center mb-4 fw-bold">How It Works</h2>
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="text-primary mb-3"><i class="bi bi-calculator-fill fs-1"></i></div>
+                <h4 class="card-title">1. Enter Your Grades</h4>
+                <p class="card-text">Input your KCSE subject grades into our smart calculator. We handle the complex KUCCPS weighted cluster formulas for you.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="text-success mb-3"><i class="bi bi-search fs-1"></i></div>
+                <h4 class="card-title">2. Explore Courses</h4>
+                <p class="card-text">Get matched with over <strong>20,000</strong> Degree, Diploma, Certificate, and Artisan courses based on your specific performance.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm text-center p-4">
+                <div class="text-warning mb-3"><i class="bi bi-lightbulb-fill fs-1"></i></div>
+                <h4 class="card-title">3. Make Informed Choices</h4>
+                <p class="card-text">Read student reviews, check market demand, and save your favorites to build a solid application strategy.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES LIST -->
+    <div class="row mb-5 bg-light p-5 rounded-3">
+        <div class="col-md-6">
+            <h3 class="fw-bold mb-4">Why Choose Us?</h3>
+            <ul class="list-unstyled">
+                <li class="mb-3 d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                    <span><strong>Accurate Calculations:</strong> We use the official KUCCPS weighted cluster formula, ensuring your points are precise.</span>
+                </li>
+                <li class="mb-3 d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                    <span><strong>Comprehensive Database:</strong> Access Kenya's largest database of accredited courses from all major institutions.</span>
+                </li>
+                <li class="mb-3 d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                    <span><strong>Community Driven:</strong> Read real reviews from current students to get the unbiased truth about campus life.</span>
+                </li>
+                <li class="mb-3 d-flex align-items-start">
+                    <i class="bi bi-check-circle-fill text-success me-3 fs-5"></i>
+                    <span><strong>Market Insights:</strong> We prioritize courses with high job demand to help you secure your future.</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="text-center">
+                <h1 class="display-1 fw-bold text-primary">20k+</h1>
+                <p class="fs-4 text-muted">Courses Listed</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALL TO ACTION -->
+    <div class="text-center py-5">
+        <h2 class="mb-3">Ready to find your path?</h2>
+        <p class="mb-4 text-muted">Join thousands of students making smarter career decisions today.</p>
+        <a href="{% url 'students:signup' %}" class="btn btn-primary btn-lg px-5 shadow">Get Started Now</a>
+    </div>
+
+</div>
+{% endblock %}

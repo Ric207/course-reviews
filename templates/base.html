@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}Course Reviews KE - Career Guidance & Cluster Points Calculator{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}The #1 career guidance platform for Kenyan students. Calculate your KUCCPS cluster points, find the best degree, diploma, and certificate courses based on your KCSE grades, and read student reviews.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}KUCCPS, Cluster Points Calculator, Kenya Universities, Career Guidance, Best Courses in Kenya, TVET, Diploma courses, KCSE grading system, University placement Kenya, Course Reviews KE{% endblock %}">
+    <meta name="author" content="Course Reviews KE">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}Course Reviews KE - Find Your Dream Course{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Get accurate career recommendations based on your KCSE grades. Calculate cluster points and explore over 20,000 accredited courses in Kenya.{% endblock %}">
+    
+    <meta property="og:image" content="{% block og_image %}{% static 'courses/hero.jpg' %}{% endblock %}">
+    
+    <meta property="og:site_name" content="Course Reviews KE">
+    <meta property="og:locale" content="en_KE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{% block twitter_title %}Course Reviews KE - Career Guidance{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Calculate your KUCCPS cluster points and find the perfect course for your KCSE grade today.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'courses/hero.jpg' %}{% endblock %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+    
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
+            <i class="bi bi-mortarboard-fill text-warning me-2"></i>Course Reviews
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog_list' %}">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact_us' %}">Contact</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    <!-- Student Links -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="nav-link" href="{% url 'students:enter_grades' %}">My Grades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'students:results' %}">My Results</a>
+                    </li>
+                    
+                    <!-- Favorites Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'students:favorite_list' %}">
+                            <i class="bi bi-heart-fill text-danger"></i> Favorites
+                        </a>
+                    </li>
+
+                    <!-- NEW: Career Quiz Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'students:career_quiz' %}">
+                            <i class="bi bi-compass text-info"></i> Career Quiz
+                        </a>
+                    </li>
+
+                    <!-- User Dropdown Menu -->
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle btn btn-outline-secondary text-light border-0 py-1 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'students:profile' %}">
+                                    <i class="bi bi-person-gear me-2"></i> My Profile
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="POST" class="px-2 py-1">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Log Out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
+                {% else %}
+                    <!-- Guest Links -->
+                    <li class="nav-item ms-lg-3">
+                        <a class="nav-link" href="{% url 'students:payment' %}">Payment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="nav-link btn btn-primary text-white px-4 fw-bold" href="{% url 'students:signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container mt-4 mb-5" style="min-height: 60vh;">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+[
+  {
+    "program_name": "Certificate in Information Communication Technology",
+    "level": "Certificate",
+    "path": "ICT & Computing > Information Technology",
+    "min_mean_grade": "D+",
+    "min_cluster_points": 16,
+    "subject_requirements": [
+      "Mathematics (Minimum D plain / 3 points)",
+      "English or Kiswahili (Minimum D+ / 4 points)",
+      "Any other subject"
+    ],
+    "description": "A foundational ICT certificate providing essential computer skills including computer fundamentals, operating systems (Windows, Linux basics), Microsoft Office Suite (Word, Excel, PowerPoint), internet and email usage, computer networks fundamentals, basic troubleshooting, and digital literacy.",
+    "career_path": "Graduates secure employment as computer operators, data entry clerks, office assistants, cyber café attendants, IT support assistants, or computer lab assistants. Starting salaries: KSh 15,000-28,000 monthly.",
+    "duration": "1 year (2 semesters)",
+    "exam_body": "Kenya National Examinations Council (KNEC)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.030795Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

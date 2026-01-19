@@ -1,0 +1,10 @@
+KENYA COURSES DATABASE - SUMMARY REPORT
+======================================================================
+
+Total Courses: 14
+
+BY LEVEL:
+  Degree: 6
+  Diploma: 2
+  Certificate: 2
+  Artisan: 4

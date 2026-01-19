@@ -1,0 +1,46 @@
+[
+  {
+    "program_name": "Bachelor of Science in Computer Science",
+    "level": "Degree",
+    "path": "Science & IT > Computer Science",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 36,
+    "subject_requirements": [
+      "Mathematics (Minimum B plain / 9 points)",
+      "Physics or Chemistry (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any Group 2 or 3 subject"
+    ],
+    "description": "A comprehensive BSc in Computer Science offering in-depth study of programming fundamentals (Python, Java, C++, JavaScript), data structures and algorithms, software engineering principles, database management systems, computer networks and security, operating systems, artificial intelligence and machine learning, web and mobile development, cloud computing, and cybersecurity.",
+    "career_path": "Graduates pursue diverse careers as software developers/engineers, full-stack developers, mobile app developers, systems analysts, database administrators, network engineers, data scientists, machine learning engineers, AI specialists, cybersecurity analysts, DevOps engineers, cloud architects, or IT consultants. Starting salaries range from KSh 60,000-150,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / Commission for University Education (CUE)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029744Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Science in Information Technology",
+    "level": "Degree",
+    "path": "Science & IT > Information Technology",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Physics, Chemistry, or Computer Studies (Minimum C plain / 6 points)",
+      "Any Group 2, 3, or 4 subject"
+    ],
+    "description": "A practical-oriented IT degree focusing on enterprise systems, network infrastructure design and management, web application development, mobile app development, database administration, cloud computing technologies, IT project management, cybersecurity implementation, and systems administration.",
+    "career_path": "Graduates work as IT support specialists, systems administrators, network administrators, web developers, mobile application developers, database administrators, cloud engineers, cybersecurity analysts, IT project coordinators, or IT consultants. Starting salaries range from KSh 50,000-110,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029810Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

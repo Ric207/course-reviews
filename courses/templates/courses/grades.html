@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-center mb-4">Enter Your KCSE Grades</h2>
+
+{% if error_message %}
+<div class="alert alert-danger">{{ error_message }}</div>
+{% endif %}
+
+<form method="post">
+  {% csrf_token %}
+  <div class="row">
+    {% for subject in subjects_list %}
+    <div class="col-md-6 mb-3">
+      <label class="form-label"><strong>{{ subject.display }}</strong></label>
+      <select name="{{ subject.name }}" class="form-select">
+        <option value="">-- Select Grade --</option>
+        {% for g in grades %}
+        <option value="{{ g }}" {% if student_data and student_data|default:'' %}{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary btn-lg">Submit Grades</button>
+  </div>
+</form>
+{% endblock %}

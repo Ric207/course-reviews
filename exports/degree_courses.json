@@ -1,0 +1,132 @@
+[
+  {
+    "program_name": "Bachelor of Science in Computer Science",
+    "level": "Degree",
+    "path": "Science & IT > Computer Science",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 36,
+    "subject_requirements": [
+      "Mathematics (Minimum B plain / 9 points)",
+      "Physics or Chemistry (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any Group 2 or 3 subject"
+    ],
+    "description": "A comprehensive BSc in Computer Science offering in-depth study of programming fundamentals (Python, Java, C++, JavaScript), data structures and algorithms, software engineering principles, database management systems, computer networks and security, operating systems, artificial intelligence and machine learning, web and mobile development, cloud computing, and cybersecurity.",
+    "career_path": "Graduates pursue diverse careers as software developers/engineers, full-stack developers, mobile app developers, systems analysts, database administrators, network engineers, data scientists, machine learning engineers, AI specialists, cybersecurity analysts, DevOps engineers, cloud architects, or IT consultants. Starting salaries range from KSh 60,000-150,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / Commission for University Education (CUE)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029744Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Science in Information Technology",
+    "level": "Degree",
+    "path": "Science & IT > Information Technology",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Physics, Chemistry, or Computer Studies (Minimum C plain / 6 points)",
+      "Any Group 2, 3, or 4 subject"
+    ],
+    "description": "A practical-oriented IT degree focusing on enterprise systems, network infrastructure design and management, web application development, mobile app development, database administration, cloud computing technologies, IT project management, cybersecurity implementation, and systems administration.",
+    "career_path": "Graduates work as IT support specialists, systems administrators, network administrators, web developers, mobile application developers, database administrators, cloud engineers, cybersecurity analysts, IT project coordinators, or IT consultants. Starting salaries range from KSh 50,000-110,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029810Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Engineering (Electrical and Electronic Engineering)",
+    "level": "Degree",
+    "path": "Engineering > Electrical & Electronic",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 40,
+    "subject_requirements": [
+      "Mathematics (Minimum B plain / 9 points)",
+      "Physics (Minimum B plain / 9 points)",
+      "Chemistry (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)"
+    ],
+    "description": "An ERB-accredited professional engineering degree providing comprehensive training in electrical power systems, electronics and microelectronics, control and automation systems, telecommunications engineering, signal processing, embedded systems design, digital electronics, power electronics, electrical machines and drives, renewable energy systems, and instrumentation.",
+    "career_path": "Career opportunities include electrical design engineer, power systems engineer, telecommunications engineer, automation and control engineer, instrumentation engineer, renewable energy consultant, electrical maintenance engineer, project engineer, or consulting engineer. Starting salaries: KSh 70,000-180,000 monthly.",
+    "duration": "5 years (10 semesters)",
+    "exam_body": "Engineers Board of Kenya (EBK) / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029832Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Engineering (Civil Engineering)",
+    "level": "Degree",
+    "path": "Engineering > Civil",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 40,
+    "subject_requirements": [
+      "Mathematics (Minimum B plain / 9 points)",
+      "Physics (Minimum B plain / 9 points)",
+      "Chemistry or Geography (Minimum C+ / 7 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)"
+    ],
+    "description": "An ERB-accredited professional civil engineering degree providing comprehensive training in structural analysis and design, geotechnical engineering, hydraulics and hydrology, transportation and highway engineering, construction project management, surveying and geomatics, materials science, environmental engineering, and water resources engineering.",
+    "career_path": "Graduates pursue careers as structural engineers, site engineers, resident engineers, consulting engineers, highway engineers, water and sanitation engineers, geotechnical engineers, project managers, construction managers, or quantity surveyors. Starting salaries: KSh 70,000-200,000 monthly.",
+    "duration": "5 years (10 semesters)",
+    "exam_body": "Engineers Board of Kenya (EBK) / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029857Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Commerce (Accounting)",
+    "level": "Degree",
+    "path": "Business & Economics > Accounting",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics or Business Studies (Minimum C plain / 6 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any two Group 2, 3, or 4 subjects"
+    ],
+    "description": "A comprehensive business degree specializing in accounting theory and practice, financial accounting, management accounting, cost accounting, auditing and assurance, taxation (KRA tax system), accounting information systems, financial management, corporate governance, business law, accounting standards (IFRS, IAS), and forensic accounting.",
+    "career_path": "Graduates pursue careers as accountants, auditors, tax consultants, financial analysts, management accountants, budget analysts, financial controllers, or accounting information systems specialists. Starting salaries: KSh 45,000-100,000 monthly. Most pursue CPA (K) certification for enhanced career prospects.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE / ICPAK exemptions",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029875Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Bachelor of Commerce (Finance)",
+    "level": "Degree",
+    "path": "Business & Economics > Finance",
+    "min_mean_grade": "C+",
+    "min_cluster_points": 34,
+    "subject_requirements": [
+      "Mathematics or Business Studies (Minimum C plain / 6 points)",
+      "English or Kiswahili (Minimum C plain / 6 points)",
+      "Any two Group 2, 3, or 4 subjects"
+    ],
+    "description": "A specialized business degree focusing on corporate finance, investment analysis and portfolio management, financial markets and institutions, capital markets operations, banking operations, financial modeling, risk management, derivatives and financial engineering, international finance, and treasury management.",
+    "career_path": "Graduates pursue careers as financial analysts, investment analysts, equity research analysts, portfolio managers, credit analysts, relationship managers, treasury officers, financial planners, risk managers, stockbrokers, or fintech specialists. Starting salaries: KSh 50,000-120,000 monthly.",
+    "duration": "4 years (8 semesters)",
+    "exam_body": "University Senate / CUE",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.029895Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

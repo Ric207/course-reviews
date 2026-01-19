@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Career Interest Quiz{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white p-4">
+                    <h2 class="mb-0"><i class="bi bi-compass"></i> Discover Your Path</h2>
+                    <p class="mb-0 text-white-50">Answer 3 simple questions to find your ideal career.</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <h5 class="fw-bold text-dark mb-3">{{ field.label }}</h5>
+                                <div class="list-group">
+                                    {% for radio in field %}
+                                        <label class="list-group-item list-group-item-action p-3 d-flex align-items-center cursor-pointer">
+                                            {{ radio.tag }} 
+                                            <span class="ms-3 fs-5">{{ radio.choice_label }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn btn-success btn-lg fw-bold shadow">
+                                Reveal My Career Match <i class="bi bi-magic ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Hide default radio circle and style the row */
+    input[type="radio"] { transform: scale(1.5); }
+    .cursor-pointer { cursor: pointer; }
+    .list-group-item:hover { background-color: #f8f9fa; }
+</style>
+{% endblock %}

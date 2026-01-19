@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <!-- Welcome Header -->
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+            {{ user.username|slice:":1"|upper }}
+        </div>
+        <div>
+            <h2 class="mb-0 fw-bold">Welcome, {{ user.username }}</h2>
+            <p class="text-muted mb-0">{{ user.email }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <!-- LEFT COLUMN: Stats & Status -->
+        <div class="col-md-4 mb-4">
+            
+            <!-- Account Status Card -->
+            <div class="card shadow-sm border-0 mb-3">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Account Status</h5>
+                    {% if payment.has_paid %}
+                        <div class="d-flex align-items-center text-success mb-2">
+                            <i class="bi bi-patch-check-fill fs-3 me-2"></i>
+                            <span class="fs-5 fw-bold">Premium Member</span>
+                        </div>
+                        <p class="small text-muted">You have full access to all features.</p>
+                    {% else %}
+                        <div class="d-flex align-items-center text-secondary mb-2">
+                            <i class="bi bi-lock-fill fs-3 me-2"></i>
+                            <span class="fs-5 fw-bold">Free Plan</span>
+                        </div>
+                        <p class="small text-muted">Unlock Cluster Points & Blog Secrets.</p>
+                        <a href="{% url 'students:payment' %}" class="btn btn-warning w-100 fw-bold">Upgrade to Premium</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Activity Stats -->
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="card shadow-sm border-0 bg-light text-center h-100">
+                        <div class="card-body py-3">
+                            <h3 class="fw-bold text-danger mb-0">{{ favorites_count }}</h3>
+                            <small class="text-muted">Saved Courses</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card shadow-sm border-0 bg-light text-center h-100">
+                        <div class="card-body py-3">
+                            <h3 class="fw-bold text-warning mb-0">{{ reviews_count }}</h3>
+                            <small class="text-muted">Reviews</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Settings -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white border-bottom fw-bold py-3">
+                    <i class="bi bi-gear-fill me-2"></i> Account Settings
+                </div>
+                <div class="card-body p-4">
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <h6 class="mb-3 text-primary">Change Password</h6>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for field in password_form %}
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text small text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-dark px-4">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Style Django form inputs
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.add('form-control');
+        input.classList.add('bg-light');
+        input.classList.add('border-0');
+    });
+</script>
+{% endblock %}

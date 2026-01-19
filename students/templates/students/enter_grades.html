@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Enter Your KCSE Grades{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title">Enter Your KCSE Grades</h2>
+                    <p class="card-text">
+                        Please enter the grades for all subjects you took. 
+                        Our system will automatically calculate your cluster points.
+                    </p>
+                    <p class="text-muted">
+                        Leave any subjects you did not take as "--- Select Grade ---".
+                    </p>
+                    <hr>
+
+                    <form method="POST">
+                        
+                        {% csrf_token %}
+                        
+                        {{ form.as_p }}
+
+                        <br>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Calculate My Cluster Points
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+  

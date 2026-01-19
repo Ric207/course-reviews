@@ -1,0 +1,23 @@
+[
+  {
+    "program_name": "Certificate in Business Management",
+    "level": "Certificate",
+    "path": "Business & Management > Business Administration",
+    "min_mean_grade": "D+",
+    "min_cluster_points": 16,
+    "subject_requirements": [
+      "English or Kiswahili (Minimum D+ / 4 points)",
+      "Mathematics (Minimum D plain / 3 points)",
+      "Any other subject"
+    ],
+    "description": "A comprehensive business certificate program providing fundamental business management skills including principles of management, office administration, business communication, basic bookkeeping, business mathematics, customer service, marketing basics, and entrepreneurship fundamentals.",
+    "career_path": "Graduates secure employment as office assistants, administrative clerks, receptionists, customer service representatives, sales assistants, store clerks, cashiers, or start small businesses. Starting salaries: KSh 15,000-30,000 monthly.",
+    "duration": "1 year (2 semesters)",
+    "exam_body": "Kenya National Examinations Council (KNEC)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.030755Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "program_name": "Artisan in Masonry",
+    "level": "Artisan",
+    "path": "Construction & Building Trades > Masonry",
+    "min_mean_grade": "D-",
+    "min_cluster_points": 8,
+    "subject_requirements": [
+      "Mathematics (Minimum D- / 2 points) OR Any subject"
+    ],
+    "description": "A practical artisan course providing hands-on training in masonry including bricklaying, blocklaying, stone masonry, wall construction, foundation laying, mortar preparation, building materials, basic measurements, plastering and rendering, building safety, and quality standards in masonry work.",
+    "career_path": "Graduates work as masons, bricklayers, blocklayers, or self-employed contractors. Daily rates: KSh 1,000-1,500. Skilled masons typically earn KSh 25,000-60,000 monthly. Strong demand in construction sector.",
+    "duration": "6 months to 1 year",
+    "exam_body": "Kenya National Examinations Council (KNEC)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.031178Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  },
+  {
+    "program_name": "Artisan in Carpentry and Joinery",
+    "level": "Artisan",
+    "path": "Construction & Building Trades > Carpentry",
+    "min_mean_grade": "D-",
+    "min_cluster_points": 8,
+    "subject_requirements": [
+      "Mathematics (Minimum D- / 2 points) OR Any subject"
+    ],
+    "description": "A practical artisan training providing hands-on skills in woodworking including timber identification, carpentry hand tools, power tools operation, cutting and shaping wood, joint making, door and window frame construction, furniture making basics, roof construction, wood finishing, and workshop safety.",
+    "career_path": "Graduates work as carpenters, joiners, furniture makers, or self-employed. Daily rates: KSh 1,000-2,000. Skilled carpenters earn KSh 30,000-80,000 monthly. High demand with construction activities.",
+    "duration": "6 months to 1 year",
+    "exam_body": "Kenya National Examinations Council (KNEC)",
+    "metadata": {
+      "date_generated": "2025-12-12T21:24:57.031217Z",
+      "source": "Kenya Courses Database Generator 2025",
+      "last_updated": "2025-12-12"
+    }
+  }
+]
