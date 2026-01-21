@@ -48,7 +48,7 @@ def background_stk_push(phone_number, username):
         if not clean_ref: clean_ref = "Student"
 
         client = MpesaClient()
-        amount = 1 
+        amount = 100
         transaction_desc = 'Premium'
         callback_url = 'https://api.darajambili.com/express-payment' 
         
