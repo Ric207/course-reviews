@@ -165,8 +165,8 @@ LOGOUT_REDIRECT_URL = 'home'
 
 # --- M-PESA CONFIGURATION (SANDBOX) ---
 MPESA_ENVIRONMENT = 'sandbox' # Change to 'production' when live
-MPESA_CONSUMER_KEY = 'pSPc69gLJKIso3HbAHjqbJH7fAppxDYHkp6VDlXbO2AuRuUg'     # <--- Get this from Safaricom Portal
-MPESA_CONSUMER_SECRET = 'kF8dLmfqiG9A8GwbDsrgEdfYjrK0KGhBvhqwvmKvEIHV52iJGREWDd1b0UHWPQa9' # <--- Get this from Safaricom Portal
+MPESA_CONSUMER_KEY = 'SE1VCwKCHmOFr9zxOhiBjzTMcr3yl93C48AOdJl0G3gIrbLP'     # <--- Get this from Safaricom Portal
+MPESA_CONSUMER_SECRET = 'VS8Yy0pVoTlqK7AeGE3kW22ThH9gadGAa4NuoICvClwAa8eHS3reOvdmhMKwAmRo' # <--- Get this from Safaricom Portal
 MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919' # Standard Sandbox Passkey
 MPESA_SHORTCODE = '174379' # Standard Sandbox Shortcode
 MPESA_EXPRESS_SHORTCODE = '174379'
