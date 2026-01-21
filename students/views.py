@@ -8,8 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 from django_daraja.mpesa.core import MpesaClient
 from django.http import JsonResponse
-import threading
-import re 
+import re
 import time
 
 # Import Models
@@ -26,7 +25,7 @@ GRADE_RANKS = {
     'C+': 7, 'C': 6, 'C-': 5, 'D+': 4, 'D': 3, 'D-': 2, 'E': 1, 'Any': 0,
 }
 
-# --- HELPER FUNCTIONS ---
+# --- HELPER FUNCTION FOR PAGINATION ---
 def paginate_queryset(request, queryset_list, param_name='page'):
     paginator = Paginator(queryset_list, 20) 
     page = request.GET.get(param_name)
@@ -36,31 +35,6 @@ def paginate_queryset(request, queryset_list, param_name='page'):
         return paginator.page(1)
     except EmptyPage:
         return paginator.page(paginator.num_pages)
-
-def background_stk_push(phone_number, username):
-    """
-    Runs ENTIRE M-Pesa flow in background so the user never waits.
-    """
-    print(f"--- [Background] Starting STK Logic for {phone_number} ---")
-    try:
-        # Sanitize Account Reference
-        clean_ref = "".join(c for c in username if c.isalnum())[:12]
-        if not clean_ref: clean_ref = "Student"
-
-        # Initialize Client INSIDE the thread (This is the slow part!)
-        client = MpesaClient()
-        amount = 1 
-        transaction_desc = 'Premium'
-        callback_url = 'https://api.darajambili.com/express-payment' 
-        
-        print(f"--- [Background] Connecting to Safaricom... ---")
-        response = client.stk_push(phone_number, amount, clean_ref, transaction_desc, callback_url)
-        
-        print(f"--- [Background] Response Code: {response.response_code} ---")
-        print(f"--- [Background] Description: {response.response_description} ---")
-        
-    except Exception as e:
-        print(f"--- [Background] CRITICAL ERROR: {e} ---")
 
 # ==========================================
 # AUTHENTICATION & PROFILE
@@ -118,7 +92,7 @@ def enter_grades(request):
     return render(request, 'students/enter_grades.html', {'form': form})
 
 # ==========================================
-# PAYMENT SYSTEM (INSTANT UI)
+# PAYMENT SYSTEM (SECURE & VERIFIED)
 # ==========================================
 
 @login_required
@@ -126,7 +100,7 @@ def payment_page(request):
     if request.method == 'POST':
         raw_phone = request.POST.get('phone_number')
         
-        # 1. Format Phone Number
+        # 1. Format Phone Number (Strict)
         phone_number = str(raw_phone).strip().replace(" ", "").replace("+", "")
         if phone_number.startswith("0"):
             phone_number = "254" + phone_number[1:]
@@ -135,46 +109,121 @@ def payment_page(request):
         elif len(phone_number) == 9 and phone_number.startswith("1"):
             phone_number = "254" + phone_number
             
-        print(f"DEBUG: Processing {phone_number}...")
+        print(f"DEBUG: Initiating Payment for {phone_number}...")
 
-        # 2. Fire Background Thread (INSTANT RETURN)
-        # We pass the username and phone to the background function
-        t = threading.Thread(
-            target=background_stk_push, 
-            args=(phone_number, request.user.username)
-        )
-        t.daemon = True # Ensures thread doesn't block server shutdown
-        t.start()
+        # 2. Sanitize Account Reference (Max 12 chars, Alphanumeric only)
+        # This fixes the "No STK Push" issue caused by bad names
+        clean_ref = "".join(c for c in request.user.username if c.isalnum())[:12]
+        if not clean_ref: clean_ref = "Student"
 
-        # 3. Create Session for processing page
-        request.session['checkout_request_id'] = f"manual_{int(time.time())}"
-        
-        # 4. Redirect immediately (User sees waiting screen instantly)
-        return redirect('students:payment_processing')
+        client = MpesaClient()
+        amount = 1 
+        transaction_desc = 'Premium'
+        # Use a generic URL that works in Sandbox. 
+        # Since we use QUERY verification, this URL doesn't need to reach us.
+        callback_url = 'https://api.darajambili.com/express-payment' 
+
+        try:
+            # 3. Send Request (Synchronous - We wait for the ID)
+            response = client.stk_push(phone_number, amount, clean_ref, transaction_desc, callback_url)
+            
+            print(f"DEBUG: Response Code: {response.response_code}")
+            
+            if response.response_code == '0':
+                # SUCCESS: Request accepted.
+                # Store the CheckoutRequestID to verify later.
+                request.session['checkout_request_id'] = response.checkout_request_id
+                request.session['payment_phone'] = phone_number
+                
+                return redirect('students:payment_processing')
+            else:
+                messages.error(request, f"M-Pesa Failed: {response.response_description}")
+                
+        except Exception as e:
+            print(f"DEBUG Error: {e}")
+            messages.error(request, "Could not connect to M-Pesa. Please check your internet.")
             
     return render(request, 'students/payment.html')
 
 @login_required
 def payment_processing(request):
     """Renders the waiting page."""
+    # Ensure they have a pending transaction
+    if 'checkout_request_id' not in request.session:
+        return redirect('students:payment')
     return render(request, 'students/payment_processing.html')
 
 @login_required
 def check_payment_status(request):
-    """Always pending for sandbox, relying on manual button."""
-    return JsonResponse({'status': 'pending'})
+    """
+    AJAX endpoint for auto-polling. 
+    Strictly checks Safaricom status.
+    """
+    checkout_id = request.session.get('checkout_request_id')
+    if not checkout_id:
+        return JsonResponse({'status': 'error'})
+
+    client = MpesaClient()
+    try:
+        response = client.stk_status_query(checkout_id)
+        
+        # '0' in ResultCode means Transaction Successful in Query response
+        # Note: Response structure varies by library version, robust check:
+        if response.response_code == '0':
+            # MARK AS PAID
+            payment, _ = Payment.objects.get_or_create(user=request.user)
+            payment.has_paid = True
+            payment.save()
+            return JsonResponse({'status': 'completed'})
+        
+        return JsonResponse({'status': 'pending'})
+
+    except Exception as e:
+        print(f"Query Error: {e}")
+        return JsonResponse({'status': 'pending'})
 
 @login_required
 def confirm_payment_manual(request):
     """
-    Unlocks account immediately when user clicks the button.
-    This bypasses the STK Push failure.
+    STRICT VERIFICATION:
+    Run manually when user clicks "I have entered my PIN".
+    Does NOT auto-unlock. Queries Safaricom first.
     """
-    payment, _ = Payment.objects.get_or_create(user=request.user)
-    payment.has_paid = True
-    payment.save()
-    messages.success(request, "Premium Access Unlocked!")
-    return redirect('students:results')
+    checkout_id = request.session.get('checkout_request_id')
+    
+    if not checkout_id:
+        messages.error(request, "No transaction found. Please try paying again.")
+        return redirect('students:payment')
+
+    client = MpesaClient()
+    try:
+        # Ask Safaricom
+        response = client.stk_status_query(checkout_id)
+        print(f"DEBUG MANUAL QUERY: {response.response_code} - {response.response_description}")
+
+        if response.response_code == '0':
+            # SUCCESS
+            payment, _ = Payment.objects.get_or_create(user=request.user)
+            payment.has_paid = True
+            payment.save()
+            messages.success(request, "Payment confirmed! Welcome to Premium.")
+            return redirect('students:results')
+        
+        elif "The transaction is being processed" in str(response.response_description):
+             messages.info(request, "Payment is still processing. Please wait a moment and try again.")
+             return redirect('students:payment_processing')
+             
+        else:
+            # FAILED / CANCELLED / TIMEOUT
+            # In Sandbox, if you didn't actually pay, this will fail.
+            messages.error(request, f"Payment not found. Status: {response.response_description}")
+            return redirect('students:payment_processing')
+
+    except Exception as e:
+        # sandbox often throws errors if transaction doesn't exist
+        print(f"Manual Query Error: {e}")
+        messages.error(request, "Could not verify payment yet. Please wait a few seconds and try again.")
+        return redirect('students:payment_processing')
 
 # ==========================================
 # FEATURES
@@ -250,12 +299,10 @@ def career_quiz(request):
 # ==========================================
 @login_required
 def results(request):
-    # 1. Payment Check
     payment, created = Payment.objects.get_or_create(user=request.user)
     if not payment.has_paid:
         return redirect('students:payment')
     
-    # 2. Get Grades
     try:
         grades = StudentGrades.objects.get(student=request.user)
     except StudentGrades.DoesNotExist:
@@ -265,13 +312,13 @@ def results(request):
     if not student_mean_grade:
         return redirect('students:enter_grades')
 
-    # 3. Match Grades
+    # 1. Match Grades
     student_grade_rank = GRADE_RANKS.get(student_mean_grade, 1)
     qualified_grade_names_base = [g for g, r in GRADE_RANKS.items() if r <= student_grade_rank]
     escaped_grades = [re.escape(grade) for grade in qualified_grade_names_base]
     grade_regex = '|'.join(escaped_grades)
 
-    # 4. Sort by Demand
+    # 2. Sort by Demand
     market_demand_sorting = Case(
         When(path__icontains='Medicine', then=Value(1)),
         When(path__icontains='Engineering', then=Value(2)),
@@ -282,14 +329,14 @@ def results(request):
         output_field=IntegerField()
     )
         
-    # 5. Base Query
+    # 3. Base Query
     qualified_courses = Course.objects.filter(
         min_mean_grade__iregex=rf'({grade_regex})'
     ).annotate(
         market_rank=market_demand_sorting
     ).order_by('market_rank', 'name')
     
-    # 6. Search & Filter
+    # 4. Search & Filter
     search_query = request.GET.get('search', '')
     if search_query:
         qualified_courses = qualified_courses.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
@@ -332,7 +379,7 @@ def results(request):
                 course.chance_color = "secondary"
         return course_list
 
-    # 7. Split, Limit, Process, Paginate
+    # 5. Split, Limit, Process, Paginate
     degree_list = add_chance_info(list(qualified_courses.filter(level__icontains='Degree')[:200]))
     diploma_list = add_chance_info(list(qualified_courses.filter(level__icontains='Diploma')[:200]))
     cert_list = add_chance_info(list(qualified_courses.filter(level__icontains='Certificate')[:200]))

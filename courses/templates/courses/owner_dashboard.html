@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Owner Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📊 Business Overview</h2>
+        <a href="/admin/" class="btn btn-dark btn-sm">Go to Django Admin</a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-4 mb-4">
+        <!-- Revenue -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-success text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-white-50 text-uppercase small fw-bold">Total Revenue</h6>
+                    <h2 class="mb-0 fw-bold">Ksh {{ total_revenue }}</h2>
+                    <small>{{ paid_users }} Paid Students</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-primary text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-white-50 text-uppercase small fw-bold">Total Students</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_users }}</h2>
+                    <small>+{{ new_users_today }} Today</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Engagement -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-warning text-dark h-100">
+                <div class="card-body">
+                    <h6 class="text-black-50 text-uppercase small fw-bold">Engagement</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_reviews }}</h2>
+                    <small>Course Reviews Posted</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Favorites -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-info text-white h-100">
+                <div class="card-body">
+                    <h6 class="text-white-50 text-uppercase small fw-bold">Interest</h6>
+                    <h2 class="mb-0 fw-bold">{{ total_favorites }}</h2>
+                    <small>Courses Saved to Favorites</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights Row -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-bold py-3">
+                    🔥 Most Popular Courses
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for course in popular_courses %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ course.name }}</strong>
+                            <br>
+                            <small class="text-muted">{{ course.path }}</small>
+                        </div>
+                        <span class="badge bg-danger rounded-pill">{{ course.num_likes }} <i class="bi bi-heart-fill"></i></span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-center text-muted">No data yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white fw-bold py-3">
+                    🚀 Quick Actions
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'blog_list' %}" class="btn btn-outline-dark text-start">
+                            <i class="bi bi-pencil-square me-2"></i> Manage Blog Content
+                        </a>
+                        <a href="/admin/auth/user/" class="btn btn-outline-dark text-start">
+                            <i class="bi bi-people-fill me-2"></i> Manage Users
+                        </a>
+                        <a href="/admin/courses/coursereview/" class="btn btn-outline-dark text-start">
+                            <i class="bi bi-chat-left-quote-fill me-2"></i> Moderate Reviews
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

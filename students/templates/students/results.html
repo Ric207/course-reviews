@@ -31,7 +31,7 @@
     {% endif %}
 
     <div class="row">
-        <!-- LEFT COLUMN: Courses & Filters (66% width) -->
+        <!-- LEFT COLUMN: Courses & Filters -->
         <div class="col-lg-8">
             
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -49,7 +49,6 @@
             <!-- FILTER & SEARCH BAR -->
             <div class="card p-3 mb-4 bg-light border-0 shadow-sm">
                 <form method="get" class="row g-2 align-items-end">
-                    <!-- Filter Dropdown -->
                     <div class="col-md-5">
                         <label for="filter_path" class="form-label fw-bold small text-muted">FILTER BY FIELD</label>
                         <select name="filter_path" id="filter_path" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -62,14 +61,12 @@
                         </select>
                     </div>
 
-                    <!-- Search Input -->
                     <div class="col-md-5">
                         <label for="search" class="form-label fw-bold small text-muted">SEARCH</label>
                         <input type="text" name="search" id="search" class="form-control form-control-sm" 
                                placeholder="e.g. Dental, Law" value="{{ search_query }}">
                     </div>
 
-                    <!-- Search Button -->
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary btn-sm w-100">Search</button>
                     </div>
@@ -103,36 +100,25 @@
             <!-- TAB CONTENT -->
             <div class="tab-content" id="courseTabsContent">
                 
-                <!-- === DEGREE TAB === -->
+                <!-- DEGREE TAB -->
                 <div class="tab-pane fade show active" id="degree" role="tabpanel">
                     {% if degree_courses %}
                         {% for course in degree_courses %}
-                            <!-- Blue Background for Degree -->
+                            <!-- Blue Background -->
                             <div class="card mb-3 shadow-sm border-start border-4 border-primary bg-primary bg-opacity-10">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <h5 class="card-title text-primary mb-1 fw-bold">{{ course.name }}</h5>
                                             <span class="badge bg-primary">{{ course.path }}</span>
-                                            
-                                            <!-- ADMISSION CHANCE BADGE -->
                                             {% if course.chance %}
-                                            <span class="badge bg-{{ course.chance_color }} ms-1">
-                                                {{ course.chance }}
-                                            </span>
+                                            <span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>
                                             {% endif %}
                                         </div>
-                                        
-                                        <!-- HEART ICON (Favorites) -->
                                         <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none" title="Save to Favorites">
-                                            {% if course.id in user_favorites_ids %}
-                                                <i class="bi bi-heart-fill text-danger fs-4"></i>
-                                            {% else %}
-                                                <i class="bi bi-heart text-secondary fs-4"></i>
-                                            {% endif %}
+                                            {% if course.id in user_favorites_ids %}<i class="bi bi-heart-fill text-danger fs-4"></i>{% else %}<i class="bi bi-heart text-secondary fs-4"></i>{% endif %}
                                         </a>
                                     </div>
-                                    
                                     <p class="text-muted small mb-2 mt-2">
                                         Min Grade: <strong>{{ course.min_mean_grade }}</strong> 
                                         {% if course.min_cluster_points > 0 %}
@@ -146,8 +132,6 @@
                                         <button class="btn btn-sm btn-light border text-dark shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#det{{ course.id }}">
                                             View Requirements
                                         </button>
-                                        
-                                        <!-- REVIEWS BUTTON -->
                                         <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm">
                                             <i class="bi bi-star-half"></i> Reviews
                                         </a>
@@ -157,12 +141,8 @@
                                         <div class="card card-body bg-white border-0 shadow-sm mt-2">
                                             <h6 class="text-danger small fw-bold">REQUIREMENTS</h6>
                                             <ul class="small mb-2">
-                                                {% if course.min_cluster_points > 0 %}
-                                                <li>Cluster Points: {{ course.min_cluster_points|floatformat:1 }}</li>
-                                                {% endif %}
-                                                {% if course.subject_requirements %}
-                                                <li>Subjects: {{ course.subject_requirements }}</li>
-                                                {% endif %}
+                                                {% if course.min_cluster_points > 0 %}<li>Cluster Points: {{ course.min_cluster_points|floatformat:1 }}</li>{% endif %}
+                                                {% if course.subject_requirements %}<li>Subjects: {{ course.subject_requirements }}</li>{% endif %}
                                             </ul>
                                             <h6 class="text-success small fw-bold">CAREER PATH</h6>
                                             <p class="small mb-0">{{ course.career_path_info|default:"Info available upon request." }}</p>
@@ -171,7 +151,6 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        
                         <!-- PAGINATION (Degree) -->
                         {% if degree_courses.has_other_pages %}
                         <nav><ul class="pagination justify-content-center mt-4">
@@ -184,50 +163,34 @@
                             {% else %}<li class="page-item disabled"><span class="page-link">Next</span></li>{% endif %}
                         </ul></nav>
                         {% endif %}
-
                     {% else %}
                         <div class="alert alert-warning">Based on your mean grade of <strong>{{ student_mean_grade }}</strong>, no Degree courses were found matching your filters.</div>
                     {% endif %}
                 </div>
 
-                <!-- === DIPLOMA TAB === -->
+                <!-- DIPLOMA TAB -->
                 <div class="tab-pane fade" id="diploma" role="tabpanel">
                     {% if diploma_courses %}
                         {% for course in diploma_courses %}
-                            <!-- Green Background for Diploma -->
+                            <!-- Green Background -->
                             <div class="card mb-3 shadow-sm border-start border-4 border-success bg-success bg-opacity-10">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <h5 class="card-title text-success mb-1 fw-bold">{{ course.name }}</h5>
                                             <span class="badge bg-success">{{ course.path }}</span>
-                                            
-                                            {% if course.chance %}
-                                            <span class="badge bg-{{ course.chance_color }} ms-1">
-                                                {{ course.chance }}
-                                            </span>
-                                            {% endif %}
+                                            {% if course.chance %}<span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>{% endif %}
                                         </div>
-                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none" title="Save to Favorites">
-                                            {% if course.id in user_favorites_ids %}
-                                                <i class="bi bi-heart-fill text-danger fs-4"></i>
-                                            {% else %}
-                                                <i class="bi bi-heart text-secondary fs-4"></i>
-                                            {% endif %}
+                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none">
+                                            {% if course.id in user_favorites_ids %}<i class="bi bi-heart-fill text-danger fs-4"></i>{% else %}<i class="bi bi-heart text-secondary fs-4"></i>{% endif %}
                                         </a>
                                     </div>
                                     <p class="text-muted small mb-2 mt-2">Min Grade: {{ course.min_mean_grade }}</p>
                                     <p class="mb-2">{{ course.description|linebreaks|truncatewords:30 }}</p>
-                                    
                                     <div class="d-flex gap-2">
-                                        <button class="btn btn-sm btn-light border text-dark shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#detD{{ course.id }}">
-                                            View Requirements
-                                        </button>
-                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm">
-                                            <i class="bi bi-star-half"></i> Reviews
-                                        </a>
+                                        <button class="btn btn-sm btn-light border text-dark shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#detD{{ course.id }}">View Requirements</button>
+                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm"><i class="bi bi-star-half"></i> Reviews</a>
                                     </div>
-
                                     <div class="collapse mt-2" id="detD{{ course.id }}">
                                         <div class="card card-body bg-white border-0 shadow-sm mt-2">
                                             <h6 class="text-danger small fw-bold">REQUIREMENTS</h6>
@@ -242,7 +205,6 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        
                         <!-- PAGINATION (Diploma) -->
                         {% if diploma_courses.has_other_pages %}
                         <nav><ul class="pagination justify-content-center mt-4">
@@ -260,39 +222,29 @@
                     {% endif %}
                 </div>
 
-                <!-- === CERTIFICATE TAB === -->
+                <!-- CERTIFICATE TAB -->
                 <div class="tab-pane fade" id="certificate" role="tabpanel">
                      {% if certificate_courses %}
                         {% for course in certificate_courses %}
-                            <!-- Cyan Background for Certificate -->
+                            <!-- Cyan Background -->
                             <div class="card mb-3 shadow-sm border-start border-4 border-info bg-info bg-opacity-10">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <h5 class="card-title text-dark mb-1 fw-bold">{{ course.name }}</h5>
                                             <span class="badge bg-info text-dark">{{ course.path }}</span>
-                                            {% if course.chance %}
-                                            <span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>
-                                            {% endif %}
+                                            {% if course.chance %}<span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>{% endif %}
                                         </div>
-                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none" title="Save to Favorites">
-                                            {% if course.id in user_favorites_ids %}
-                                                <i class="bi bi-heart-fill text-danger fs-4"></i>
-                                            {% else %}
-                                                <i class="bi bi-heart text-secondary fs-4"></i>
-                                            {% endif %}
+                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none">
+                                            {% if course.id in user_favorites_ids %}<i class="bi bi-heart-fill text-danger fs-4"></i>{% else %}<i class="bi bi-heart text-secondary fs-4"></i>{% endif %}
                                         </a>
                                     </div>
                                     <p class="text-muted small mb-2 mt-2">Min Grade: {{ course.min_mean_grade }}</p>
                                     <p class="mb-2">{{ course.description|truncatewords:30 }}</p>
-                                    
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-light border text-dark shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#detC{{ course.id }}">View Details</button>
-                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm">
-                                            <i class="bi bi-star-half"></i> Reviews
-                                        </a>
+                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm"><i class="bi bi-star-half"></i> Reviews</a>
                                     </div>
-
                                     <div class="collapse mt-2" id="detC{{ course.id }}">
                                         <div class="card card-body bg-white border-0 shadow-sm mt-2">
                                             <strong>Subjects:</strong> {{ course.subject_requirements }}
@@ -301,7 +253,6 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        
                         <!-- PAGINATION (Certificate) -->
                         {% if certificate_courses.has_other_pages %}
                         <nav><ul class="pagination justify-content-center mt-4">
@@ -319,41 +270,31 @@
                     {% endif %}
                 </div>
 
-                <!-- === ARTISAN TAB === -->
+                <!-- ARTISAN TAB -->
                 <div class="tab-pane fade" id="artisan" role="tabpanel">
                      {% if artisan_courses %}
                         {% for course in artisan_courses %}
-                            <!-- Grey Background for Artisan -->
+                            <!-- Grey Background -->
                             <div class="card mb-3 shadow-sm border-start border-4 border-secondary bg-secondary bg-opacity-10">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
                                             <h5 class="card-title text-secondary mb-1 fw-bold">{{ course.name }}</h5>
                                             <span class="badge bg-secondary">{{ course.path }}</span>
-                                            {% if course.chance %}
-                                            <span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>
-                                            {% endif %}
+                                            {% if course.chance %}<span class="badge bg-{{ course.chance_color }} ms-1">{{ course.chance }}</span>{% endif %}
                                         </div>
-                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none" title="Save to Favorites">
-                                            {% if course.id in user_favorites_ids %}
-                                                <i class="bi bi-heart-fill text-danger fs-4"></i>
-                                            {% else %}
-                                                <i class="bi bi-heart text-secondary fs-4"></i>
-                                            {% endif %}
+                                        <a href="{% url 'students:toggle_favorite' course.id %}" class="text-decoration-none">
+                                            {% if course.id in user_favorites_ids %}<i class="bi bi-heart-fill text-danger fs-4"></i>{% else %}<i class="bi bi-heart text-secondary fs-4"></i>{% endif %}
                                         </a>
                                     </div>
                                     <p class="text-muted small mb-2 mt-2">Min Grade: {{ course.min_mean_grade }}</p>
                                     <p class="mb-2">{{ course.description|truncatewords:30 }}</p>
-                                    
                                     <div class="d-flex gap-2">
-                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm">
-                                            <i class="bi bi-star-half"></i> Reviews
-                                        </a>
+                                        <a href="{% url 'students:course_reviews' course.id %}" class="btn btn-sm btn-warning text-dark shadow-sm"><i class="bi bi-star-half"></i> Reviews</a>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
-                        
                         <!-- PAGINATION (Artisan) -->
                         {% if artisan_courses.has_other_pages %}
                         <nav><ul class="pagination justify-content-center mt-4">
@@ -373,10 +314,9 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Sidebar (33% width) -->
+        <!-- RIGHT COLUMN: Sidebar -->
         <div class="col-lg-4">
             
-            <!-- FIXED SIDEBAR WRAPPER -->
             <div class="sticky-top" style="top: 80px; z-index: 10;">
                 
                 <!-- 1. Performance Card -->
@@ -396,12 +336,24 @@
                             <li class="list-group-item d-flex justify-content-between"><span>Arts</span><span class="badge bg-secondary rounded-pill">{{ grades.cluster_points_arts|floatformat:1 }}</span></li>
                         </ul>
                         <div class="alert alert-info mt-3 small text-start">
-                            <strong>Note:</strong> If you see <strong>0.0</strong>, please go back to "Edit Grades" and ensure you have filled in all 4 key subjects for that cluster.
+                            <strong>Note:</strong> Cluster points are estimates based on previous years' data. Official cutoffs are determined by KUCCPS annually based on overall candidate performance.
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Useful Links Widget -->
+                <!-- 2. CAREER QUIZ PROMO (Inserted) -->
+                <div class="card shadow-sm border-0 mb-4 bg-light text-dark">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-compass display-4 text-primary mb-3"></i>
+                        <h5 class="fw-bold">Confused about your path?</h5>
+                        <p class="small text-muted mb-4">Take our 1-minute personality quiz to find the perfect career match for you.</p>
+                        <a href="{% url 'students:career_quiz' %}" class="btn btn-outline-primary fw-bold w-100 shadow-sm">
+                            Take Career Quiz
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 3. Useful Links Widget -->
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-light fw-bold">
                         <i class="bi bi-link-45deg"></i> Important Links
@@ -418,13 +370,13 @@
                     </div>
                 </div>
 
-                <!-- 3. Disclaimer Widget -->
+                <!-- 4. Disclaimer Widget -->
                 <div class="alert alert-warning small mb-4">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <strong>Disclaimer:</strong> Cluster points are estimates based on previous years' data. Official cutoffs are determined by KUCCPS annually based on overall candidate performance.
+                    <strong>Disclaimer:</strong> Official cutoffs are determined by KUCCPS annually.
                 </div>
 
-            </div> <!-- End Sticky -->
+            </div>
 
         </div>
     </div>

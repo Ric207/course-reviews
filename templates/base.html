@@ -94,12 +94,21 @@
                         </a>
                     </li>
 
-                    <!-- NEW: Career Quiz Link -->
+                    <!-- Career Quiz Link -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'students:career_quiz' %}">
                             <i class="bi bi-compass text-info"></i> Career Quiz
                         </a>
                     </li>
+
+                    <!-- SUPERUSER DASHBOARD (Only visible to you) -->
+                    {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning fw-bold" href="{% url 'owner_dashboard' %}">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    {% endif %}
 
                     <!-- User Dropdown Menu -->
                     <li class="nav-item dropdown ms-lg-3">
