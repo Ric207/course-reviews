@@ -7,11 +7,15 @@ admin.site.register(Favorite)
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    # This makes the columns visible in the list
-    list_display = ('user', 'has_paid', 'transaction_code', 'date_paid')
+    # What columns to show
+    list_display = ('user', 'transaction_code', 'has_paid', 'date_paid')
     
-    # Adds filters on the right side
+    # Filters on the right side
     list_filter = ('has_paid', 'date_paid')
     
-    # Allows searching by username or M-Pesa code
+    # Search box functionality
     search_fields = ('user__username', 'transaction_code')
+    
+    # THIS IS THE MAGIC LINE:
+    # It allows you to check/uncheck 'Has Paid' directly in the list view
+    list_editable = ('has_paid',)
