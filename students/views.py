@@ -6,11 +6,7 @@ from django.contrib import messages
 from django.db.models import Case, When, Value, IntegerField, Q, Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
-from django_daraja.mpesa.core import MpesaClient
-from django.http import JsonResponse
-import threading
-import re
-import time
+import re 
 
 # Import Models
 from .models import StudentGrades, Payment, Favorite
@@ -37,23 +33,6 @@ def paginate_queryset(request, queryset_list, param_name='page'):
         return paginator.page(1)
     except EmptyPage:
         return paginator.page(paginator.num_pages)
-
-def background_stk_push(phone_number, username):
-    """Runs M-Pesa request in background to prevent freezing."""
-    print(f"--- [Background] Starting STK Logic for {phone_number} ---")
-    try:
-        clean_ref = "".join(c for c in username if c.isalnum())[:12]
-        if not clean_ref: clean_ref = "Student"
-
-        client = MpesaClient()
-        amount = 100 # Production Amount
-        transaction_desc = 'Premium'
-        callback_url = 'https://api.darajambili.com/express-payment' 
-        
-        response = client.stk_push(phone_number, amount, clean_ref, transaction_desc, callback_url)
-        print(f"--- [Background] Response: {response.response_description} ---")
-    except Exception as e:
-        print(f"--- [Background] Error: {e} ---")
 
 # ==========================================
 # AUTHENTICATION & PROFILE
@@ -111,53 +90,41 @@ def enter_grades(request):
     return render(request, 'students/enter_grades.html', {'form': form})
 
 # ==========================================
-# PAYMENT SYSTEM (FIXED)
+# PAYMENT SYSTEM (MANUAL CODE ENTRY)
 # ==========================================
 @login_required
 def payment_page(request):
+    """
+    Manual Payment verification.
+    Accepts M-Pesa Transaction Code (e.g., QKB...) and unlocks account.
+    """
     if request.method == 'POST':
-        raw_phone = request.POST.get('phone_number')
+        mpesa_code = request.POST.get('mpesa_code', '').strip().upper()
         
-        phone_number = str(raw_phone).strip().replace(" ", "").replace("+", "")
-        if phone_number.startswith("0"):
-            phone_number = "254" + phone_number[1:]
-        elif len(phone_number) == 9 and phone_number.startswith("7"):
-            phone_number = "254" + phone_number
-        elif len(phone_number) == 9 and phone_number.startswith("1"):
-            phone_number = "254" + phone_number
+        # 1. Validation: Code must be 10 chars (e.g. QKB...)
+        if len(mpesa_code) == 10 and mpesa_code.isalnum():
             
-        print(f"DEBUG: Processing {phone_number}...")
+            # 2. Check if Code Used (Prevent Sharing)
+            if Payment.objects.filter(transaction_code=mpesa_code).exists():
+                # Allow user to re-enter their own code if they got locked out, but block others
+                existing = Payment.objects.get(transaction_code=mpesa_code)
+                if existing.user != request.user:
+                    messages.error(request, "This code has already been used!")
+                    return render(request, 'students/payment.html')
 
-        t = threading.Thread(
-            target=background_stk_push, 
-            args=(phone_number, request.user.username)
-        )
-        t.daemon = True 
-        t.start()
-
-        request.session['checkout_request_id'] = f"manual_{int(time.time())}"
-        
-        return redirect('students:payment_processing')
+            # 3. Success: Unlock Account
+            payment, created = Payment.objects.get_or_create(user=request.user)
+            payment.has_paid = True
+            payment.transaction_code = mpesa_code
+            payment.save()
+            
+            messages.success(request, f"Code {mpesa_code} Verified! Welcome to Premium.")
+            return redirect('students:results')
+            
+        else:
+            messages.error(request, "Invalid Code. Please enter the 10-digit M-Pesa transaction code.")
             
     return render(request, 'students/payment.html')
-
-@login_required
-def payment_processing(request):
-    if 'checkout_request_id' not in request.session:
-        return redirect('students:payment')
-    return render(request, 'students/payment_processing.html')
-
-@login_required
-def check_payment_status(request):
-    return JsonResponse({'status': 'pending'})
-
-@login_required
-def confirm_payment_manual(request):
-    payment, _ = Payment.objects.get_or_create(user=request.user)
-    payment.has_paid = True
-    payment.save()
-    messages.success(request, "Premium Access Unlocked!")
-    return redirect('students:results')
 
 # ==========================================
 # FEATURES
@@ -229,7 +196,7 @@ def career_quiz(request):
     return render(request, 'students/career_quiz.html', {'form': form})
 
 # ==========================================
-# MAIN RESULTS ENGINE (Updated with Gap Analysis)
+# MAIN RESULTS ENGINE
 # ==========================================
 @login_required
 def results(request):
@@ -280,7 +247,8 @@ def results(request):
     if selected_path and selected_path != 'All':
         qualified_courses = qualified_courses.filter(path__iexact=selected_path)
 
-    # --- GAP ANALYSIS: Near Misses (NEW) ---
+    # --- GAP ANALYSIS: Near Misses ---
+    # Find courses that require exactly 1 grade higher than student has
     target_rank = student_grade_rank + 1
     near_miss_list = []
     target_grade_name = None
@@ -297,6 +265,8 @@ def results(request):
             market_rank=market_demand_sorting
         ).order_by('market_rank', 'name')[:5] 
         
+        # Manually process Near Misses
+        temp_misses = []
         for c in missed_qs:
             c.chance = "Missed by 1 Grade"
             c.chance_color = "secondary"
@@ -307,15 +277,14 @@ def results(request):
             elif 'law' in lp: pts = grades.cluster_points_law
             else: pts = grades.cluster_points_arts
             c.student_points = pts
-        
-        near_miss_list = list(missed_qs)
+            temp_misses.append(c)
+        near_miss_list = temp_misses
 
-    # Helper for "Admission Chance"
+    # Helper for "Admission Chance" & Scoring
     def add_chance_info(course_list):
         for course in course_list:
             student_points = 0.0
             path_lower = course.path.lower()
-            
             if 'med' in path_lower: student_points = grades.cluster_points_medicine
             elif 'engin' in path_lower or 'sci' in path_lower or 'agri' in path_lower or 'ict' in path_lower: 
                 student_points = grades.cluster_points_engineering
@@ -347,13 +316,13 @@ def results(request):
                 course.sort_score = 0
         return course_list
 
-    # 5. Split, Limit, Process, Paginate
+    # 5. Split & Process Lists
     degree_list = add_chance_info(list(qualified_courses.filter(level__icontains='Degree')[:200]))
     diploma_list = add_chance_info(list(qualified_courses.filter(level__icontains='Diploma')[:200]))
     cert_list = add_chance_info(list(qualified_courses.filter(level__icontains='Certificate')[:200]))
     artisan_list = add_chance_info(list(qualified_courses.filter(level__icontains='Artisan')[:200]))
 
-    # Top Picks
+    # Top Picks Logic
     all_recommendations = degree_list + diploma_list
     top_picks = sorted(all_recommendations, key=lambda x: (-x.sort_score, x.market_rank))[:3]
 

@@ -4,21 +4,18 @@ from . import views
 app_name = 'students'
 
 urlpatterns = [
-    # Authentication & Profile
+    # Auth
     path('signup/', views.signup_view, name='signup'),
     path('profile/', views.profile_view, name='profile'),
     
-    # Core Student Flow
+    # Core
     path('enter-grades/', views.enter_grades, name='enter_grades'),
     path('results/', views.results, name='results'),
     
-    # Payment Flow (New Polling System)
+    # Payment (Cleaned up - Only one page needed)
     path('payment/', views.payment_page, name='payment'),
-    path('payment/processing/', views.payment_processing, name='payment_processing'),
-    path('payment/check-status/', views.check_payment_status, name='check_payment_status'),
-    path('payment/confirm-manual/', views.confirm_payment_manual, name='confirm_payment_manual'),
     
-    # Features (Quiz, Favorites, Reviews)
+    # Features
     path('career-quiz/', views.career_quiz, name='career_quiz'),
     path('toggle-favorite/<int:course_id>/', views.toggle_favorite, name='toggle_favorite'),
     path('my-favorites/', views.favorite_list, name='favorite_list'),
