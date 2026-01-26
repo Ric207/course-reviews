@@ -25,55 +25,87 @@
                 </div>
                 
                 <div class="card-body p-4 p-md-5">
-                    <div class="text-center mb-4">
-                        <h5 class="text-muted mb-3">Lifetime Access</h5>
-                        <h1 class="display-4 fw-bold text-dark">Ksh 100</h1>
-                        <span class="badge bg-warning text-dark mt-2">One-time payment</span>
-                    </div>
-
-                    <!-- STRICT WARNING -->
-                    <div class="alert alert-danger border-0 small">
-                        <strong><i class="bi bi-exclamation-octagon-fill"></i> STRICT POLICY:</strong><br>
-                        You must pay exactly <strong>Ksh 100</strong>. 
-                        If you pay less, the system will <strong>NOT</strong> unlock your results.
-                    </div>
-
-                    <div class="bg-light p-3 rounded mb-4 border">
-                        <h6 class="fw-bold text-success mb-2">How to Pay:</h6>
-                        <ol class="mb-0 ps-3 small text-secondary">
-                            <li>Go to M-Pesa on your phone.</li>
-                            <li>Select <strong>Send Money</strong>.</li>
-                            <li>Enter Number: <strong class="text-dark">0743 439 586</strong></li>
-                            <li>Enter Amount: <strong class="text-dark">100</strong></li>
-                            <li>Enter your PIN and Send.</li>
-                        </ol>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <!-- MANUAL CODE FORM -->
-                    <form method="POST" id="paymentForm">
-                        {% csrf_token %}
-                        
-                        <label class="form-label fw-bold small text-muted">ENTER M-PESA TRANSACTION CODE</label>
-                        <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-receipt"></i></span>
-                            <input type="text" name="mpesa_code" class="form-control border-start-0 ps-0" 
-                                   placeholder="e.g. QKB23..." required 
-                                   style="text-transform: uppercase;" 
-                                   minlength="10" maxlength="10">
-                        </div>
-                        
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm" id="payButton">
-                                Verify Payment & Unlock
-                            </button>
-                        </div>
-                    </form>
                     
-                    <p class="text-center small text-muted mt-3 mb-0">
-                        Access is granted immediately after code verification.
-                    </p>
+                    <!-- CHECK PAYMENT STATUS -->
+                    {% if payment.transaction_code and not payment.has_paid %}
+                        
+                        <!-- STATE 1: PENDING VERIFICATION -->
+                        <div class="text-center animate-fade-in">
+                            <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+                            <h4 class="fw-bold text-warning">Verification Pending</h4>
+                            
+                            <p class="text-muted mb-4">
+                                We have received your code: <br>
+                                <span class="badge bg-light text-dark border fs-5 mt-2">{{ payment.transaction_code }}</span>
+                            </p>
+                            
+                            <div class="alert alert-warning bg-opacity-10 border-warning border-opacity-25 small text-start">
+                                <strong><i class="bi bi-clock-history"></i> Please Wait:</strong><br>
+                                The admin is currently verifying your payment against M-Pesa records. This typically takes <strong>5 to 30 minutes</strong>.
+                            </div>
+                            
+                            <div class="d-grid gap-2 mt-4">
+                                <a href="{% url 'students:payment' %}" class="btn btn-dark shadow-sm">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh Status
+                                </a>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <p class="small text-muted mb-2">Made a mistake?</p>
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#correctCode">
+                                Enter a Different Code
+                            </button>
+                            
+                            <!-- Hidden form to correct mistakes -->
+                            <div class="collapse mt-3" id="correctCode">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="text" name="mpesa_code" class="form-control" placeholder="New Code (e.g. QKB...)" required style="text-transform: uppercase;" minlength="10" maxlength="10">
+                                        <button class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    {% else %}
+                    
+                        <!-- STATE 2: PAYMENT FORM (Not paid yet) -->
+                        <div class="text-center mb-4">
+                            <h5 class="text-muted mb-3">Lifetime Access</h5>
+                            <h1 class="display-4 fw-bold text-dark">Ksh 100</h1>
+                            <span class="badge bg-warning text-dark mt-2">One-time payment</span>
+                        </div>
+
+                        <div class="alert alert-info border-0 text-dark small">
+                            <strong><i class="bi bi-info-circle-fill"></i> INSTRUCTIONS:</strong><br>
+                            1. Go to M-Pesa on your phone.<br>
+                            2. Send <strong>Ksh 100</strong> to <strong>0743 439 586</strong><br>
+                            3. Enter the <strong>M-Pesa Transaction Code</strong> below.
+                        </div>
+
+                        <hr class="my-4">
+
+                        <form method="POST" id="paymentForm">
+                            {% csrf_token %}
+                            
+                            <label class="form-label fw-bold small text-muted">ENTER M-PESA CODE</label>
+                            <div class="input-group input-group-lg mb-3">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-receipt"></i></span>
+                                <input type="text" name="mpesa_code" class="form-control border-start-0 ps-0" 
+                                       placeholder="e.g. QKB23..." required 
+                                       style="text-transform: uppercase;" 
+                                       minlength="10" maxlength="10">
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm" id="payButton">
+                                    Submit for Approval
+                                </button>
+                            </div>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
 
@@ -85,12 +117,20 @@
     </div>
 </div>
 
-<!-- JavaScript to show loading state -->
+<style>
+    .animate-fade-in { animation: fadeIn 0.5s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+
+<!-- JavaScript to show loading state on button click -->
 <script>
-    document.getElementById('paymentForm').addEventListener('submit', function() {
-        var btn = document.getElementById('payButton');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Verifying...';
-    });
+    const form = document.getElementById('paymentForm');
+    if (form) {
+        form.addEventListener('submit', function() {
+            var btn = document.getElementById('payButton');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Submitting...';
+        });
+    }
 </script>
 {% endblock %}

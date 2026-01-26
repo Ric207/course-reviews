@@ -95,36 +95,42 @@ def enter_grades(request):
 @login_required
 def payment_page(request):
     """
-    Manual Payment verification.
-    Accepts M-Pesa Transaction Code (e.g., QKB...) and unlocks account.
+    STRICT MANUAL PAYMENT:
+    1. User enters code.
+    2. System saves code.
+    3. Admin must manually approve in /admin/ to set has_paid=True.
     """
+    # Get the user's payment record
+    payment, created = Payment.objects.get_or_create(user=request.user)
+
+    # If Admin has already approved, send them to results
+    if payment.has_paid:
+        return redirect('students:results')
+
     if request.method == 'POST':
         mpesa_code = request.POST.get('mpesa_code', '').strip().upper()
         
-        # 1. Validation: Code must be 10 chars (e.g. QKB...)
+        # 1. Validation
         if len(mpesa_code) == 10 and mpesa_code.isalnum():
             
-            # 2. Check if Code Used (Prevent Sharing)
-            if Payment.objects.filter(transaction_code=mpesa_code).exists():
-                # Allow user to re-enter their own code if they got locked out, but block others
-                existing = Payment.objects.get(transaction_code=mpesa_code)
-                if existing.user != request.user:
-                    messages.error(request, "This code has already been used!")
-                    return render(request, 'students/payment.html')
+            # 2. Duplicate Check
+            if Payment.objects.filter(transaction_code=mpesa_code).exclude(user=request.user).exists():
+                messages.error(request, "This Transaction Code has already been used by another student!")
+                return redirect('students:payment')
 
-            # 3. Success: Unlock Account
-            payment, created = Payment.objects.get_or_create(user=request.user)
-            payment.has_paid = True
+            # 3. SAVE ONLY (Do NOT set has_paid=True)
             payment.transaction_code = mpesa_code
+            payment.has_paid = False # Strict Mode: Remains False until you approve
             payment.save()
             
-            messages.success(request, f"Code {mpesa_code} Verified! Welcome to Premium.")
-            return redirect('students:results')
+            messages.info(request, f"Code {mpesa_code} submitted successfully! Please wait for Admin approval.")
+            return redirect('students:payment') # Reload page to show pending state
             
         else:
-            messages.error(request, "Invalid Code. Please enter the 10-digit M-Pesa transaction code.")
+            messages.error(request, "Invalid Code. Please enter the 10-digit M-Pesa code.")
             
-    return render(request, 'students/payment.html')
+    # Pass the payment object to template so we can show "Pending" status
+    return render(request, 'students/payment.html', {'payment': payment})
 
 # ==========================================
 # FEATURES
