@@ -5,13 +5,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # --- IMPORT COURSE MODEL (Needed for Favorites) ---
 from courses.models import Course
 
-# Grade choices for grade dropdowns
+# Grade choices for grade dropdowns (Points)
 GRADE_CHOICES_POINTS = [
     (12, 'A'), (11, 'A-'), (10, 'B+'), (9, 'B'), (8, 'B-'),
     (7, 'C+'), (6, 'C'), (5, 'C-'), (4, 'D+'), (3, 'D'), (2, 'D-'), (1, 'E'),
 ]
 
-# Grade choices for the NEW mean_grade field
+# Grade choices for the mean_grade field (Letters)
 GRADE_CHOICES_MEAN = [
     ('A', 'A'), ('A-', 'A-'), ('B+', 'B+'), ('B', 'B'), ('B-', 'B-'),
     ('C+', 'C+'), ('C', 'C'), ('C-', 'C-'), ('D+', 'D+'), ('D', 'D'), ('D-', 'D-'), ('E', 'E'),
@@ -21,7 +21,7 @@ class StudentGrades(models.Model):
     student = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     validator_list = [MinValueValidator(1), MaxValueValidator(12)]
 
-    # --- NEW FIELD: MANUALLY ENTERED MEAN GRADE ---
+    # --- MEAN GRADE ---
     mean_grade = models.CharField(
         max_length=2, 
         choices=GRADE_CHOICES_MEAN, 
@@ -147,14 +147,19 @@ class StudentGrades(models.Model):
         self.save()
 
 
+# --- PAYMENT MODEL (Updated for Manual Pay) ---
 class Payment(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     has_paid = models.BooleanField(default=False)
     
+    # NEW FIELDS: To store manual payment details
+    transaction_code = models.CharField(max_length=20, blank=True, null=True, help_text="M-Pesa Transaction Code")
+    date_paid = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
-        return f"Payment for {self.user.username}: {self.has_paid}"
+        return f"{self.user.username} - Paid: {self.has_paid} ({self.transaction_code})"
 
-# --- NEW FAVORITE MODEL ---
+# --- FAVORITE MODEL ---
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)

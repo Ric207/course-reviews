@@ -8,7 +8,7 @@
     <!-- Messages -->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -31,39 +31,54 @@
                         <span class="badge bg-warning text-dark mt-2">One-time payment</span>
                     </div>
 
-                    <ul class="list-unstyled mb-4 small text-secondary">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> View <strong>20,000+ Courses</strong></li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Calculate <strong>Cluster Points</strong></li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Access <strong>Premium Blog</strong></li>
-                    </ul>
+                    <!-- STRICT WARNING -->
+                    <div class="alert alert-danger border-0 small">
+                        <strong><i class="bi bi-exclamation-octagon-fill"></i> STRICT POLICY:</strong><br>
+                        You must pay exactly <strong>Ksh 100</strong>. 
+                        If you pay less, the system will <strong>NOT</strong> unlock your results.
+                    </div>
+
+                    <div class="bg-light p-3 rounded mb-4 border">
+                        <h6 class="fw-bold text-success mb-2">How to Pay:</h6>
+                        <ol class="mb-0 ps-3 small text-secondary">
+                            <li>Go to M-Pesa on your phone.</li>
+                            <li>Select <strong>Send Money</strong>.</li>
+                            <li>Enter Number: <strong class="text-dark">0743 439 586</strong></li>
+                            <li>Enter Amount: <strong class="text-dark">100</strong></li>
+                            <li>Enter your PIN and Send.</li>
+                        </ol>
+                    </div>
 
                     <hr class="my-4">
 
+                    <!-- MANUAL CODE FORM -->
                     <form method="POST" id="paymentForm">
                         {% csrf_token %}
                         
-                        <label class="form-label fw-bold small text-muted">M-PESA PHONE NUMBER</label>
+                        <label class="form-label fw-bold small text-muted">ENTER M-PESA TRANSACTION CODE</label>
                         <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-phone"></i></span>
-                            <input type="text" name="phone_number" class="form-control border-start-0 ps-0" 
-                                   placeholder="0712 345 678" required>
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-receipt"></i></span>
+                            <input type="text" name="mpesa_code" class="form-control border-start-0 ps-0" 
+                                   placeholder="e.g. QKB23..." required 
+                                   style="text-transform: uppercase;" 
+                                   minlength="10" maxlength="10">
                         </div>
                         
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm" id="payButton">
-                                Pay Now (STK Push)
+                                Verify Payment & Unlock
                             </button>
                         </div>
                     </form>
                     
                     <p class="text-center small text-muted mt-3 mb-0">
-                        Check your phone for the PIN prompt after clicking.
+                        Access is granted immediately after code verification.
                     </p>
                 </div>
             </div>
 
             <div class="text-center mt-4 text-muted small">
-                <i class="bi bi-lock-fill"></i> Secure Payment via Safaricom Daraja API
+                <i class="bi bi-lock-fill"></i> Secure Manual Verification
             </div>
 
         </div>
@@ -75,7 +90,7 @@
     document.getElementById('paymentForm').addEventListener('submit', function() {
         var btn = document.getElementById('payButton');
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Verifying...';
     });
 </script>
 {% endblock %}

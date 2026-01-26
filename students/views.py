@@ -8,8 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
 from django_daraja.mpesa.core import MpesaClient
 from django.http import JsonResponse
-import threading  # <--- ADDED THIS IMPORT TO FIX THE ERROR
-import re 
+import threading
+import re
 import time
 
 # Import Models
@@ -26,8 +26,9 @@ GRADE_RANKS = {
     'C+': 7, 'C': 6, 'C-': 5, 'D+': 4, 'D': 3, 'D-': 2, 'E': 1, 'Any': 0,
 }
 
-# --- HELPER FUNCTIONS ---
+# --- HELPER FUNCTION FOR PAGINATION ---
 def paginate_queryset(request, queryset_list, param_name='page'):
+    """Helper to paginate a list or queryset."""
     paginator = Paginator(queryset_list, 20) 
     page = request.GET.get(param_name)
     try:
@@ -38,24 +39,19 @@ def paginate_queryset(request, queryset_list, param_name='page'):
         return paginator.page(paginator.num_pages)
 
 def background_stk_push(phone_number, username):
-    """
-    Runs M-Pesa request in a background thread.
-    """
+    """Runs M-Pesa request in background to prevent freezing."""
     print(f"--- [Background] Starting STK Logic for {phone_number} ---")
     try:
-        # Sanitize Account Reference
         clean_ref = "".join(c for c in username if c.isalnum())[:12]
         if not clean_ref: clean_ref = "Student"
 
         client = MpesaClient()
-        amount = 100
+        amount = 100 # Production Amount
         transaction_desc = 'Premium'
         callback_url = 'https://api.darajambili.com/express-payment' 
         
-        # Send Request
         response = client.stk_push(phone_number, amount, clean_ref, transaction_desc, callback_url)
-        print(f"--- [Background] Response Description: {response.response_description} ---")
-        
+        print(f"--- [Background] Response: {response.response_description} ---")
     except Exception as e:
         print(f"--- [Background] Error: {e} ---")
 
@@ -117,13 +113,11 @@ def enter_grades(request):
 # ==========================================
 # PAYMENT SYSTEM (FIXED)
 # ==========================================
-
 @login_required
 def payment_page(request):
     if request.method == 'POST':
         raw_phone = request.POST.get('phone_number')
         
-        # 1. Format Phone Number
         phone_number = str(raw_phone).strip().replace(" ", "").replace("+", "")
         if phone_number.startswith("0"):
             phone_number = "254" + phone_number[1:]
@@ -134,8 +128,6 @@ def payment_page(request):
             
         print(f"DEBUG: Processing {phone_number}...")
 
-        # 2. Fire Background Thread (INSTANT RETURN)
-        # We start the thread and immediately move on.
         t = threading.Thread(
             target=background_stk_push, 
             args=(phone_number, request.user.username)
@@ -143,36 +135,24 @@ def payment_page(request):
         t.daemon = True 
         t.start()
 
-        # 3. Create Session for processing page
         request.session['checkout_request_id'] = f"manual_{int(time.time())}"
         
-        # 4. Redirect immediately
         return redirect('students:payment_processing')
             
     return render(request, 'students/payment.html')
 
 @login_required
 def payment_processing(request):
-    """Renders the waiting page."""
     if 'checkout_request_id' not in request.session:
         return redirect('students:payment')
     return render(request, 'students/payment_processing.html')
 
 @login_required
 def check_payment_status(request):
-    """
-    AJAX endpoint.
-    REMOVED the crashing 'stk_status_query' call. 
-    It just returns pending so the JS keeps running until the user clicks manual.
-    """
     return JsonResponse({'status': 'pending'})
 
 @login_required
 def confirm_payment_manual(request):
-    """
-    Unlocks account immediately when user clicks the button.
-    This acts as the fallback since auto-check is disabled.
-    """
     payment, _ = Payment.objects.get_or_create(user=request.user)
     payment.has_paid = True
     payment.save()
@@ -249,7 +229,7 @@ def career_quiz(request):
     return render(request, 'students/career_quiz.html', {'form': form})
 
 # ==========================================
-# MAIN RESULTS ENGINE
+# MAIN RESULTS ENGINE (Updated with Gap Analysis)
 # ==========================================
 @login_required
 def results(request):
@@ -300,6 +280,36 @@ def results(request):
     if selected_path and selected_path != 'All':
         qualified_courses = qualified_courses.filter(path__iexact=selected_path)
 
+    # --- GAP ANALYSIS: Near Misses (NEW) ---
+    target_rank = student_grade_rank + 1
+    near_miss_list = []
+    target_grade_name = None
+    
+    for g, r in GRADE_RANKS.items():
+        if r == target_rank:
+            target_grade_name = g
+            break
+            
+    if target_grade_name:
+        missed_qs = Course.objects.filter(
+            min_mean_grade__iexact=target_grade_name
+        ).annotate(
+            market_rank=market_demand_sorting
+        ).order_by('market_rank', 'name')[:5] 
+        
+        for c in missed_qs:
+            c.chance = "Missed by 1 Grade"
+            c.chance_color = "secondary"
+            pts = 0.0
+            lp = c.path.lower()
+            if 'med' in lp: pts = grades.cluster_points_medicine
+            elif 'engin' in lp or 'ict' in lp: pts = grades.cluster_points_engineering
+            elif 'law' in lp: pts = grades.cluster_points_law
+            else: pts = grades.cluster_points_arts
+            c.student_points = pts
+        
+        near_miss_list = list(missed_qs)
+
     # Helper for "Admission Chance"
     def add_chance_info(course_list):
         for course in course_list:
@@ -337,7 +347,7 @@ def results(request):
                 course.sort_score = 0
         return course_list
 
-    # 5. Process Lists
+    # 5. Split, Limit, Process, Paginate
     degree_list = add_chance_info(list(qualified_courses.filter(level__icontains='Degree')[:200]))
     diploma_list = add_chance_info(list(qualified_courses.filter(level__icontains='Diploma')[:200]))
     cert_list = add_chance_info(list(qualified_courses.filter(level__icontains='Certificate')[:200]))
@@ -345,10 +355,7 @@ def results(request):
 
     # Top Picks
     all_recommendations = degree_list + diploma_list
-    top_picks = sorted(
-        all_recommendations, 
-        key=lambda x: (-x.sort_score, x.market_rank)
-    )[:3]
+    top_picks = sorted(all_recommendations, key=lambda x: (-x.sort_score, x.market_rank))[:3]
 
     user_favorites_ids = set(Favorite.objects.filter(user=request.user).values_list('course_id', flat=True))
 
@@ -360,6 +367,7 @@ def results(request):
         'search_query': search_query,
         'user_favorites_ids': user_favorites_ids,
         'top_picks': top_picks,
+        'near_misses': near_miss_list,
         'degree_courses': paginate_queryset(request, degree_list),
         'diploma_courses': paginate_queryset(request, diploma_list),
         'certificate_courses': paginate_queryset(request, cert_list),
