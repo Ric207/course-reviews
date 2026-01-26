@@ -21,6 +21,10 @@ class StudentGrades(models.Model):
     student = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     validator_list = [MinValueValidator(1), MaxValueValidator(12)]
 
+    # --- NEW SECURITY FIELDS (To restrict editing) ---
+    edit_count = models.IntegerField(default=0, help_text="Number of times grades have been edited after payment")
+    last_updated = models.DateTimeField(auto_now=True)
+
     # --- MEAN GRADE ---
     mean_grade = models.CharField(
         max_length=2, 
@@ -78,36 +82,19 @@ class StudentGrades(models.Model):
         return f"Grades for {self.student.username}"
 
     def _get_all_grades_as_dict(self):
-        return {
-            'mathematics': self.mathematics or 0,
-            'english': self.english or 0,
-            'kiswahili': self.kiswahili or 0,
-            'biology': self.biology or 0,
-            'physics': self.physics or 0,
-            'chemistry': self.chemistry or 0,
-            'history': self.history or 0,
-            'geography': self.geography or 0,
-            'cre': self.cre or 0,
-            'ire': self.ire or 0,
-            'hre': self.hre or 0,
-            'home_science': self.home_science or 0,
-            'art_and_design': self.art_and_design or 0,
-            'agriculture': self.agriculture or 0,
-            'woodwork': self.woodwork or 0,
-            'metalwork': self.metalwork or 0,
-            'building_construction': self.building_construction or 0,
-            'power_mechanics': self.power_mechanics or 0,
-            'electricity': self.electricity or 0,
-            'drawing_and_design': self.drawing_and_design or 0,
-            'computer_studies': self.computer_studies or 0,
-            'aviation_technology': self.aviation_technology or 0,
-            'french': self.french or 0,
-            'german': self.german or 0,
-            'arabic': self.arabic or 0,
-            'kenyan_sign_language': self.kenyan_sign_language or 0,
-            'music': self.music or 0,
-            'business_studies': self.business_studies or 0,
-        }
+        data = {}
+        # Exclude non-grade fields from the dictionary
+        exclude_fields = [
+            'student', 'mean_grade', 
+            'cluster_points_medicine', 'cluster_points_engineering', 
+            'cluster_points_law', 'cluster_points_arts',
+            'edit_count', 'last_updated'
+        ]
+        for field in self._meta.fields:
+            if field.name not in exclude_fields:
+                value = getattr(self, field.name)
+                data[field.name] = value if value is not None else 0
+        return data
 
     def calculate_all_clusters(self):
         grades = self._get_all_grades_as_dict()

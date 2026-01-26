@@ -79,14 +79,51 @@ def profile_view(request):
 @login_required
 def enter_grades(request):
     grades, created = StudentGrades.objects.get_or_create(student=request.user)
+    payment, _ = Payment.objects.get_or_create(user=request.user)
+    
+    # 1. SECURITY CHECK: If paid, have they exceeded edit limits?
+    if payment.has_paid:
+        if grades.edit_count >= 1:
+            messages.error(request, "SECURITY ALERT: You have exceeded the maximum number of grade edits allowed after payment. Please contact admin if this is a mistake.")
+            return redirect('students:results')
+        else:
+            # Show a warning that this is their ONE chance
+            messages.warning(request, "WARNING: You can only edit your grades ONE time after payment to correct mistakes. Make sure they are correct!")
+
     if request.method == 'POST':
         form = GradeEntryForm(request.POST, instance=grades)
+        
         if form.is_valid():
-            saved_grades = form.save()
-            saved_grades.calculate_all_clusters()
-            return redirect('students:results') 
+            # 2. CHECK 5-SUBJECT LIMIT (Only if paid)
+            if payment.has_paid:
+                # Calculate how many fields changed
+                changed_fields = form.changed_data
+                # Ignore hidden fields or auto-fields
+                subjects_changed = [f for f in changed_fields if f not in ['edit_count', 'last_updated']]
+                
+                if len(subjects_changed) > 5:
+                    messages.error(request, f"SECURITY ALERT: You changed {len(subjects_changed)} subjects. You are only allowed to correct up to 5 subjects to prevent account sharing.")
+                    return render(request, 'students/enter_grades.html', {'form': form})
+            
+            try:
+                saved_grades = form.save(commit=False)
+                
+                # 3. Increment Edit Counter if Paid
+                if payment.has_paid:
+                    saved_grades.edit_count += 1
+                
+                saved_grades.save()
+                saved_grades.calculate_all_clusters()
+                
+                messages.success(request, "Grades updated successfully!")
+                return redirect('students:results')
+            except Exception as e:
+                messages.error(request, f"Calculation Error: {e}")
+        else:
+            messages.error(request, "Please check your inputs.")
     else:
         form = GradeEntryForm(instance=grades)
+        
     return render(request, 'students/enter_grades.html', {'form': form})
 
 # ==========================================
